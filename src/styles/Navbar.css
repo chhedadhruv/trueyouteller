@@ -1,5 +1,5 @@
 .navbar {
-  background: var(--white);
+  background: var(--surface);
   height: 80px;
   display: flex;
   justify-content: center;
@@ -19,7 +19,7 @@
 }
 
 .navbar-logo {
-  color: var(--deep-purple);
+  color: var(--heading);
   justify-self: start;
   cursor: pointer;
   text-decoration: none;
@@ -46,7 +46,7 @@
 }
 
 .nav-links {
-  color: var(--dark-navy);
+  color: var(--text);
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -61,7 +61,7 @@
 }
 
 .nav-links.active {
-  color: var(--deep-purple);
+  color: var(--heading);
   border-bottom: 3px solid var(--bright-orange);
 }
 
@@ -88,7 +88,7 @@
   }
 
   .nav-menu.active {
-    background: var(--white);
+    background: var(--surface);
     left: 0;
     opacity: 1;
     transition: all 0.5s ease;
@@ -132,7 +132,7 @@
 .menu-icon {
   background: none;
   border: none;
-  color: var(--deep-purple);
+  color: var(--heading);
   line-height: 1;
   padding: 4px;
 }
@@ -169,5 +169,19 @@
     width: auto;
     margin: 1.5rem auto;
     padding: 0.8rem 2rem;
+  }
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+@media screen and (max-width: 960px) {
+  .theme-toggle {
+    position: absolute;
+    top: 19px;
+    right: 90px;
+    margin-left: 0;
   }
 }

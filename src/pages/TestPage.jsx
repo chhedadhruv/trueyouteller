@@ -5,6 +5,7 @@ import { PERSONALITY_TYPES } from '../data/personalityTypes';
 import { scoreAnswers } from '../utils/scoring';
 import { clearProgress, loadProgress, resultPath, saveLastResult, saveProgress } from '../utils/storage';
 import { saveTestResult } from '../firebase/config';
+import { awardBadge } from '../utils/badges';
 import { buildMeta, SITE_URL } from '../utils/seo';
 import '../styles/TestPage.css';
 
@@ -153,6 +154,7 @@ const TestPage = () => {
     const { type, percentages } = scoreAnswers(answers);
     const result = { type, name, percentages, completedAt: new Date().toISOString(), invitedBy: invite };
     saveLastResult(result);
+    awardBadge('first-test');
     clearProgress();
     saveTestResult({
       name,

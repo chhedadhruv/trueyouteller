@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router';
 import { PERSONALITY_TYPES } from '../data/personalityTypes';
 import { pairSlug, topMatches } from '../data/compatibility';
 import { getAnimalImage } from '../utils/images';
+import { awardBadge, trackProgress } from '../utils/badges';
 import { breadcrumbJsonLd, buildMeta, SITE_NAME, SITE_URL } from '../utils/seo';
 import PersonalityProfile from '../components/PersonalityProfile';
 import Breadcrumbs from '../components/Breadcrumbs';
@@ -48,6 +49,10 @@ export const meta = ({ params }) => {
 const TypePage = () => {
   const { type: typeParam } = useParams();
   const type = findType(typeParam);
+
+  useEffect(() => {
+    if (type && trackProgress('types', type.code) >= 5) awardBadge('explorer');
+  }, [type]);
 
   if (!type) {
     return (

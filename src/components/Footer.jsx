@@ -15,7 +15,7 @@ const Footer = () => (
           <li><Link to="/test">Free Personality Test</Link></li>
           <li><Link to="/types">16 Personality Types</Link></li>
           <li><Link to="/compatibility">Compatibility Checker</Link></li>
-          <li><Link to="/#mini-games">Mini-Games</Link></li>
+          <li><Link to="/quizzes">Fun Quizzes</Link></li>
           <li><Link to="/#faq">FAQ</Link></li>
         </ul>
       </nav>

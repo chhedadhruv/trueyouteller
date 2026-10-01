@@ -1,6 +1,8 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, isRouteErrorResponse, Link } from 'react-router';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import BadgeToast from './components/BadgeToast';
+import { themeInitScript } from './components/ThemeToggle';
 import './styles/App.css';
 
 export const links = () => [
@@ -19,11 +21,12 @@ export const links = () => [
 
 export function Layout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="theme-color" content="#5B2C6F" />
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <Meta />
         <Links />
       </head>
@@ -33,6 +36,7 @@ export function Layout({ children }) {
           <main>{children}</main>
           <Footer />
         </div>
+        <BadgeToast />
         <ScrollRestoration />
         <Scripts />
       </body>

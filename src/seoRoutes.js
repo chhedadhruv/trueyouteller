@@ -1,5 +1,6 @@
 import { PERSONALITY_TYPES } from './data/personalityTypes.js';
 import { ALL_PAIR_SLUGS } from './data/compatibility.js';
+import { QUIZZES } from './data/quizzes/index.js';
 
 // Indexable routes: prerendered to static HTML and listed in sitemap.xml.
 // Plain JS (no JSX/assets) so react-router.config.js and scripts/ can import it.
@@ -10,6 +11,8 @@ export const SEO_ROUTES = [
   { path: '/test', priority: 0.9, changefreq: 'monthly' },
   { path: '/types', priority: 0.9, changefreq: 'monthly' },
   ...typeSlugs.map((slug) => ({ path: `/types/${slug}`, priority: 0.8, changefreq: 'monthly' })),
+  { path: '/quizzes', priority: 0.8, changefreq: 'monthly' },
+  ...QUIZZES.map((quiz) => ({ path: `/quizzes/${quiz.slug}`, priority: 0.8, changefreq: 'monthly' })),
   { path: '/compatibility', priority: 0.8, changefreq: 'monthly' },
   ...ALL_PAIR_SLUGS.map((slug) => ({ path: `/compatibility/${slug}`, priority: 0.6, changefreq: 'monthly' })),
   { path: '/about', priority: 0.5, changefreq: 'yearly' },

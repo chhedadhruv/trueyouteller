@@ -2,12 +2,14 @@
 //   default.png       site-wide card
 //   {type}.png ×16    one per personality type (e.g. intj.png)
 //   compatibility.png compatibility checker pages
+//   quiz-{slug}.png   one per mini-quiz
 // Usage: node scripts/generate-og.mjs  (re-run after changing type names or branding)
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
 import sharp from 'sharp';
 import { PERSONALITY_TYPES } from '../src/data/personalityTypes.js';
+import { QUIZZES } from '../src/data/quizzes/index.js';
 
 const OUT = 'public/og';
 const WIDTH = 1200;
@@ -148,5 +150,50 @@ for (const type of Object.values(PERSONALITY_TYPES)) {
       )
     ),
     `${type.code.toLowerCase()}.png`
+  );
+}
+
+// Mini-quizzes: banner art where we have it, otherwise the quiz's accent gradient.
+const QUIZ_ART = { friends: 'src/images/miniGames/friends.webp', 'inside-out': 'src/images/miniGames/insideout.webp' };
+const QUIZ_COLORS = {
+  'hogwarts-house': ['#7f0909', '#d3a625'],
+  'marvel-hero': ['#c62828', '#1565c0'],
+  friends: ['#6a1b9a', '#f9a825'],
+  'inside-out': ['#1e88e5', '#fdd835'],
+  element: ['#e65100', '#00838f'],
+};
+
+for (const quiz of QUIZZES) {
+  const [c1, c2] = QUIZ_COLORS[quiz.slug] ?? [PURPLE, ORANGE];
+  const art = QUIZ_ART[quiz.slug] && (await toDataUrl(QUIZ_ART[quiz.slug], 480));
+  const outcomes = Object.values(quiz.outcomes).map((o) => o.name);
+  await render(
+    frame(
+      h(
+        'div',
+        { display: 'flex', flexDirection: 'column', flex: 1, marginRight: 40 },
+        h('div', { fontSize: 30, fontWeight: 800, color: ORANGE, letterSpacing: 2 }, 'FREE FUN QUIZ'),
+        h('div', { fontFamily: 'Chewy', fontSize: 76, color: PURPLE, lineHeight: 1.05 }, quiz.title),
+        h('div', { fontSize: 30, marginTop: 18 }, outcomes.slice(0, 4).join(' · ') + (outcomes.length > 4 ? ' · …' : '')),
+        siteUrl
+      ),
+      h(
+        'div',
+        {
+          display: 'flex',
+          width: 420,
+          height: 420,
+          borderRadius: 40,
+          background: `linear-gradient(135deg, ${c1}, ${c2})`,
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden',
+        },
+        art
+          ? img(art, { width: 420, height: 420, objectFit: 'cover' })
+          : h('div', { fontFamily: 'Chewy', fontSize: 110, color: '#ffffff', textAlign: 'center' }, quiz.shortTitle.split(' ')[0])
+      )
+    ),
+    `quiz-${quiz.slug}.png`
   );
 }

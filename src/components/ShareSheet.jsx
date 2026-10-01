@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FaWhatsapp, FaXTwitter, FaFacebook, FaLink, FaDownload, FaFilePdf, FaShareNodes } from 'react-icons/fa6';
 import { copyText, downloadBlob, downloadProfilePdf, nativeShare, shareLinks } from '../utils/share';
 import { drawShareCard } from '../utils/shareCard';
+import { awardBadge } from '../utils/badges';
 import { SITE_URL } from '../utils/seo';
 
 // Share actions for a result: native share (with image) where available, otherwise
@@ -29,6 +30,7 @@ const ShareSheet = ({ type, name, breakdown, url, isOwner }) => {
     setBusy(true);
     try {
       await task();
+      awardBadge('sharer');
     } catch (error) {
       console.error(error);
       setStatus('Something went wrong. Please try again.');
@@ -56,7 +58,9 @@ const ShareSheet = ({ type, name, breakdown, url, isOwner }) => {
     });
 
   const handleCopy = async () => {
-    setStatus((await copyText(url)) ? 'Link copied!' : 'Could not copy. Long-press the address bar instead.');
+    const copied = await copyText(url);
+    setStatus(copied ? 'Link copied!' : 'Could not copy. Long-press the address bar instead.');
+    if (copied) awardBadge('sharer');
   };
 
   return (
@@ -68,13 +72,13 @@ const ShareSheet = ({ type, name, breakdown, url, isOwner }) => {
             <FaShareNodes aria-hidden="true" /> Share
           </button>
         )}
-        <a className="btn share-btn share-whatsapp" href={links.whatsapp} target="_blank" rel="noopener noreferrer">
+        <a className="btn share-btn share-whatsapp" href={links.whatsapp} target="_blank" rel="noopener noreferrer" onClick={() => awardBadge('sharer')}>
           <FaWhatsapp aria-hidden="true" /> WhatsApp
         </a>
-        <a className="btn share-btn" href={links.x} target="_blank" rel="noopener noreferrer">
+        <a className="btn share-btn" href={links.x} target="_blank" rel="noopener noreferrer" onClick={() => awardBadge('sharer')}>
           <FaXTwitter aria-hidden="true" /> X
         </a>
-        <a className="btn share-btn" href={links.facebook} target="_blank" rel="noopener noreferrer">
+        <a className="btn share-btn" href={links.facebook} target="_blank" rel="noopener noreferrer" onClick={() => awardBadge('sharer')}>
           <FaFacebook aria-hidden="true" /> Facebook
         </a>
         <button type="button" className="btn share-btn" onClick={handleCopy}>

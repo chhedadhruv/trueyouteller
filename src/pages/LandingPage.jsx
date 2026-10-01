@@ -4,8 +4,10 @@ import { Link } from 'react-router';
 import { FaPencilAlt, FaHeart, FaPaintBrush, FaLaughBeam, FaBolt } from 'react-icons/fa';
 import { GiCrystalBall } from 'react-icons/gi';
 import logo from '../images/trueyouteller-logo-removebg.webp';
-import FriendsQuiz from '../components/MiniGames/friends/FriendsQuiz';
-import InsideOutQuiz from '../components/MiniGames/insideOut/InsideOutQuiz';
+import QuizCard from '../components/QuizCard';
+import BadgeStrip from '../components/BadgeStrip';
+import { QUIZZES } from '../data/quizzes';
+import '../styles/Quiz.css';
 import { buildMeta, faqJsonLd, organizationJsonLd, websiteJsonLd } from '../utils/seo';
 
 const FAQS = [
@@ -108,13 +110,19 @@ const LandingPage = () => {
         </div>
       </section>
 
+      <BadgeStrip />
+
       <section id="mini-games" className="section container mini-games">
-        <h2>Mini-Games</h2>
-        <p>Try our fun character quizzes to discover even more about yourself!</p>
-        <div className="mini-games-container">
-          <FriendsQuiz />
-          <InsideOutQuiz />
+        <h2>Fun Quizzes</h2>
+        <p>Find your Hogwarts house, Marvel hero, FRIENDS character and more!</p>
+        <div className="quiz-grid">
+          {QUIZZES.slice(0, 3).map((quiz) => (
+            <QuizCard key={quiz.slug} quiz={quiz} />
+          ))}
         </div>
+        <p className="mini-games-more">
+          <Link to="/quizzes" className="btn">See all {QUIZZES.length} quizzes →</Link>
+        </p>
       </section>
 
       <section id="faq" className="section container faq-section">

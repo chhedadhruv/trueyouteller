@@ -4,6 +4,7 @@ import { PERSONALITY_TYPES } from '../data/personalityTypes';
 import { axisBreakdown, decodePercentages } from '../utils/scoring';
 import { inviteUrl, loadLastResult, resultUrl } from '../utils/storage';
 import { getCompatibility, pairSlug } from '../data/compatibility';
+import { awardBadge } from '../utils/badges';
 import { getAnimalImage } from '../utils/images';
 import { buildMeta, SITE_URL } from '../utils/seo';
 import AxisBars from '../components/AxisBars';
@@ -62,6 +63,7 @@ const InviteFriend = ({ type, name }) => {
   const text = `I'm ${type.code}! Take this free personality test and let's see how compatible we are 💞`;
 
   const share = async () => {
+    awardBadge('inviter');
     if (navigator.share) {
       try {
         await navigator.share({ title: 'Are we compatible?', text, url });
@@ -91,6 +93,7 @@ const InviteFriend = ({ type, name }) => {
           href={`https://wa.me/?text=${encodeURIComponent(`${text} ${url}`)}`}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => awardBadge('inviter')}
         >
           WhatsApp invite
         </a>

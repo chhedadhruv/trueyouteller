@@ -1,5 +1,5 @@
 .team-member-card {
-  background: #fff;
+  background: var(--surface);
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -37,12 +37,12 @@
 .card-name {
   font-family: var(--title-font);
   font-size: 1.5rem;
-  color: var(--deep-purple);
+  color: var(--heading);
   margin: 0;
 }
 
 .card-role {
-  color: var(--dark-navy);
+  color: var(--text);
   margin: 0.25rem 0 1rem;
 }
 
@@ -55,7 +55,7 @@
 }
 
 .card-socials a:hover {
-  color: var(--deep-purple);
+  color: var(--heading);
 }
 
 @media screen and (max-width: 768px) {

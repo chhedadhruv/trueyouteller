@@ -4,7 +4,7 @@
 }
 
 .about-us-content {
-  background-color: var(--white);
+  background-color: var(--surface);
   padding: 2.5rem;
   border-radius: 15px;
   box-shadow: 0 5px 20px rgba(44, 62, 80, 0.1);

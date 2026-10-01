@@ -92,6 +92,7 @@ Make sure you have the following installed:
 | `yarn test` | 🧪 Runs the scoring unit tests |
 | `yarn images:optimize` | 🖼️ Converts images in `src/assets` into small WebP files in `src/images` |
 | `yarn og:generate` | 🃏 Regenerates the social share images in `public/og/` |
+| `node scripts/make-dark-logo.mjs` | 🌙 Rebuilds the dark-mode navbar logo from `src/images/trueyouteller.webp` |
 
 To preview the production build exactly as Firebase serves it, run `yarn build` and then `firebase emulators:start --only hosting` (http://localhost:5055).
 

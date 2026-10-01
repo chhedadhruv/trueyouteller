@@ -4,6 +4,7 @@ import { PERSONALITY_TYPES } from '../data/personalityTypes';
 import { getCompatibility, pairSlug, parsePairSlug, topMatches, TYPE_CODES } from '../data/compatibility';
 import { getAnimalImage } from '../utils/images';
 import { loadLastResult } from '../utils/storage';
+import { awardBadge } from '../utils/badges';
 import { breadcrumbJsonLd, buildMeta, SITE_URL } from '../utils/seo';
 import Breadcrumbs from '../components/Breadcrumbs';
 import '../styles/DetailedResultsPage.css';
@@ -102,6 +103,7 @@ const TypeBadge = ({ type }) => (
 
 const PairView = ({ pair }) => {
   const { a, b, score, tier, axes } = getCompatibility(...pair);
+  useEffect(() => awardBadge('matchmaker'), []);
   const others = topMatches(a.code, 4).filter(({ code }) => code !== b.code).slice(0, 3);
 
   return (

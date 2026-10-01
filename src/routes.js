@@ -6,6 +6,8 @@ export default [
   route('result/:type', 'pages/ResultPage.jsx'),
   route('types', 'pages/TypesHubPage.jsx'),
   route('types/:type', 'pages/TypePage.jsx'),
+  route('quizzes', 'pages/QuizzesHubPage.jsx'),
+  route('quizzes/:slug', 'pages/QuizPage.jsx'),
   route('compatibility', 'pages/CompatibilityPage.jsx', { id: 'compatibility' }),
   route('compatibility/:pair', 'pages/CompatibilityPage.jsx', { id: 'compatibility-pair' }),
   route('results', 'pages/LegacyResultsRedirect.jsx', { id: 'legacy-results' }),

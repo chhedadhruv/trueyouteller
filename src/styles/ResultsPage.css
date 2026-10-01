@@ -1,5 +1,5 @@
 .results-container .results-card {
-  background: var(--white);
+  background: var(--surface);
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(44, 62, 80, 0.15);
   padding: 2rem 2.5rem;
@@ -12,18 +12,18 @@
 .result-name {
   font-size: 2.5rem;
   margin-bottom: 1rem;
-  color: var(--deep-purple);
+  color: var(--heading);
 }
 
 .result-description {
   font-size: 1.1rem;
   line-height: 1.6;
-  color: var(--dark-navy);
+  color: var(--text);
   margin-bottom: 2rem;
 }
 
 .spirit-animal-section {
-  background: var(--lavender);
+  background: var(--surface-alt);
   border-radius: 8px;
   padding: 1.5rem;
   margin: 2rem 0;
@@ -46,13 +46,13 @@
 
 .spirit-animal-section h3 {
   font-family: var(--title-font);
-  color: var(--deep-purple);
+  color: var(--heading);
   margin-bottom: 0.5rem;
 }
 
 .spirit-animal-section p {
   font-size: 1rem;
-  color: var(--dark-navy);
+  color: var(--text);
 }
 
 .results-card .btn {
@@ -88,7 +88,7 @@
 
 /* All Personality Types Section */
 .all-types-section {
-  background: var(--white);
+  background: var(--surface);
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(44, 62, 80, 0.15);
   padding: 2rem;
@@ -102,7 +102,7 @@
 .all-types-section h3 {
   font-family: var(--title-font);
   font-size: 2rem;
-  color: var(--deep-purple);
+  color: var(--heading);
   margin-bottom: 1.5rem;
 }
 
@@ -118,7 +118,7 @@
   align-items: center;
   gap: 0.25rem;
   padding: 1.5rem 1rem;
-  background-color: var(--lavender);
+  background-color: var(--surface-alt);
   border-radius: 10px;
   text-align: center;
 }
@@ -126,27 +126,19 @@
 .type-code {
   font-family: var(--title-font);
   font-size: 1.5rem;
-  color: var(--deep-purple);
+  color: var(--heading);
 }
 
 .type-name {
   font-weight: 600;
-  color: var(--dark-navy);
+  color: var(--text);
   margin-bottom: 0.5rem;
 }
 
 .type-animal {
   font-size: 0.9rem;
-  color: var(--dark-navy);
+  color: var(--text);
 } 
-.result-kicker {
-  font-weight: 700;
-  color: var(--bright-orange);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  margin-bottom: 0.25rem;
-}
 
 .spirit-animal-section .spirit-animal-heading {
   font-size: 1.8rem;
@@ -211,7 +203,7 @@
 
 .axis-labels .axis-chosen {
   font-weight: 800;
-  color: var(--deep-purple);
+  color: var(--heading);
   opacity: 1;
 }
 
@@ -223,7 +215,7 @@
 .axis-track {
   display: flex;
   height: 28px;
-  background: var(--lavender);
+  background: var(--surface-alt);
   border-radius: 14px;
   overflow: hidden;
 }
@@ -261,7 +253,7 @@
 
 /* Friend view call to action */
 .friend-cta {
-  background: #fff7e8;
+  background: var(--highlight-bg);
   border: 2px dashed var(--bright-orange);
   border-radius: 15px;
   padding: 1.5rem;
@@ -277,43 +269,17 @@
 .share-sheet {
   margin-top: 2rem;
   padding-top: 1.5rem;
-  border-top: 2px solid var(--lavender);
+  border-top: 2px solid var(--border);
 }
 
-.share-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.6rem;
-}
 
 .results-card .share-buttons .btn {
   margin-top: 0;
 }
 
-.share-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 10px 18px;
-  font-size: 0.95rem;
-}
 
-.share-btn:disabled {
-  opacity: 0.6;
-  cursor: wait;
-}
 
-.share-whatsapp {
-  border-color: #25d366;
-}
 
-.share-status {
-  min-height: 1.5rem;
-  margin-top: 0.75rem;
-  font-weight: 700;
-  color: var(--deep-purple);
-}
 
 /* Full profile below the result card */
 .full-profile {
@@ -345,7 +311,7 @@
 .invite-friend {
   margin-top: 2rem;
   padding-top: 1.5rem;
-  border-top: 2px solid var(--lavender);
+  border-top: 2px solid var(--border);
 }
 
 .invite-friend h2 {
