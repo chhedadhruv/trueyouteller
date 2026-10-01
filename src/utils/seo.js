@@ -61,3 +61,15 @@ export const faqJsonLd = (faqs) => ({
     acceptedAnswer: { '@type': 'Answer', text: answer },
   })),
 });
+
+// items: [{ name, path }] from the home page down to the current page.
+export const breadcrumbJsonLd = (items) => ({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: items.map((item, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: item.name,
+    item: `${SITE_URL}${item.path}`,
+  })),
+});

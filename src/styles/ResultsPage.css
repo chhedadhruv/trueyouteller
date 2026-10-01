@@ -340,3 +340,41 @@
     font-size: 0.8rem;
   }
 }
+
+/* Invite / compatibility */
+.invite-friend {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--lavender);
+}
+
+.invite-friend h2 {
+  font-size: 1.8rem;
+}
+
+.invite-friend p {
+  margin-bottom: 1rem;
+}
+
+.inviter-match {
+  background: linear-gradient(135deg, var(--deep-purple), #8e44ad);
+  color: var(--white);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.inviter-match-title {
+  font-weight: 700;
+}
+
+.inviter-match-score {
+  font-family: var(--title-font);
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+}
+
+.inviter-match .btn-primary {
+  background: var(--bright-orange);
+  border-color: var(--bright-orange);
+}

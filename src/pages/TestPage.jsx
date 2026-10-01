@@ -63,17 +63,26 @@ const TestPage = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [savedProgress, setSavedProgress] = useState(null);
   const [showAnswers, setShowAnswers] = useState(false);
+  const [invite, setInvite] = useState(null);
   const navigate = useNavigate();
 
-  // Offer to resume a test left unfinished (read after mount: storage is browser-only).
+  // Offer to resume a test left unfinished, and pick up an invite from a friend's link
+  // (?ref=infp&rn=Sam). Both are read after mount: storage and the query are browser-only.
   useEffect(() => {
     const progress = loadProgress();
     if (progress?.answers?.some((answer) => answer !== null)) setSavedProgress(progress);
+    const params = new URLSearchParams(window.location.search);
+    const refType = params.get('ref')?.toUpperCase();
+    if (PERSONALITY_TYPES[refType ?? '']) {
+      setInvite({ type: refType, name: params.get('rn')?.slice(0, 40) || '' });
+    } else if (progress?.invite) {
+      setInvite(progress.invite);
+    }
   }, []);
 
   useEffect(() => {
-    if (step !== 'name') saveProgress({ name, answers, index: currentQuestionIndex });
-  }, [step, name, answers, currentQuestionIndex]);
+    if (step !== 'name') saveProgress({ name, answers, index: currentQuestionIndex, invite });
+  }, [step, name, answers, currentQuestionIndex, invite]);
 
   const resumeTest = () => {
     setName(savedProgress.name);
@@ -142,7 +151,7 @@ const TestPage = () => {
 
   const revealResult = () => {
     const { type, percentages } = scoreAnswers(answers);
-    const result = { type, name, percentages, completedAt: new Date().toISOString() };
+    const result = { type, name, percentages, completedAt: new Date().toISOString(), invitedBy: invite };
     saveLastResult(result);
     clearProgress();
     saveTestResult({
@@ -160,6 +169,11 @@ const TestPage = () => {
       <div className="test-container container section">
         <div className="test-card">
           <h1 className="welcome-heading">Free Personality Test</h1>
+          {invite && (
+            <p className="invite-banner">
+              💌 {invite.name || 'A friend'} ({invite.type}) invited you! Finish the test to see how compatible you are.
+            </p>
+          )}
           {savedProgress ? (
             <div className="resume-box">
               <p className="welcome-subheading">

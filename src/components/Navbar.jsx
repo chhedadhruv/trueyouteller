@@ -33,13 +33,18 @@ const Navbar = () => {
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/about" className="nav-links" onClick={closeMobileMenu}>
-              About Us
+            <NavLink to="/types" className="nav-links" onClick={closeMobileMenu}>
+              Types
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/feedback" className="nav-links" onClick={closeMobileMenu}>
-              Feedback
+            <NavLink to="/compatibility" className="nav-links" onClick={closeMobileMenu}>
+              Compatibility
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="/about" className="nav-links" onClick={closeMobileMenu}>
+              About Us
             </NavLink>
           </li>
           <li className="nav-item">

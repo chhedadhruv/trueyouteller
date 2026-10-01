@@ -2,7 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router';
 import { PERSONALITY_TYPES } from '../data/personalityTypes';
 import { axisBreakdown, decodePercentages } from '../utils/scoring';
-import { loadLastResult, resultUrl } from '../utils/storage';
+import { inviteUrl, loadLastResult, resultUrl } from '../utils/storage';
+import { getCompatibility, pairSlug } from '../data/compatibility';
 import { getAnimalImage } from '../utils/images';
 import { buildMeta, SITE_URL } from '../utils/seo';
 import AxisBars from '../components/AxisBars';
@@ -36,6 +37,71 @@ const celebrate = async () => {
   setTimeout(() => confetti({ particleCount: 80, spread: 120, origin: { y: 0.3 }, colors }), 350);
 };
 
+// Shown to someone who took the test from a friend's invite link.
+const InviterMatch = ({ type, inviter }) => {
+  const { score, tier } = getCompatibility(type.code, inviter.type);
+  const who = inviter.name || 'your friend';
+  return (
+    <div className="inviter-match">
+      <p className="inviter-match-title">
+        You ({type.code}) &amp; {who} ({inviter.type})
+      </p>
+      <p className="inviter-match-score">
+        {score}% · {tier.emoji} {tier.label}
+      </p>
+      <Link to={`/compatibility/${pairSlug(type.code, inviter.type)}`} className="btn btn-primary">
+        See your full compatibility
+      </Link>
+    </div>
+  );
+};
+
+const InviteFriend = ({ type, name }) => {
+  const [copied, setCopied] = useState(false);
+  const url = inviteUrl({ type: type.code, name });
+  const text = `I'm ${type.code}! Take this free personality test and let's see how compatible we are 💞`;
+
+  const share = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: 'Are we compatible?', text, url });
+      } catch {
+        // Share sheet dismissed.
+      }
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(`${text} ${url}`);
+      setCopied(true);
+    } catch {
+      setCopied(false);
+    }
+  };
+
+  return (
+    <section className="invite-friend" aria-labelledby="invite-heading">
+      <h2 id="invite-heading">Compare with a friend 💞</h2>
+      <p>Send this link to a friend, partner or crush. When they finish the test, they'll see how compatible you are.</p>
+      <div className="share-buttons">
+        <button type="button" className="btn btn-primary share-btn" onClick={share}>
+          {copied ? 'Invite link copied!' : 'Send invite link'}
+        </button>
+        <a
+          className="btn share-btn share-whatsapp"
+          href={`https://wa.me/?text=${encodeURIComponent(`${text} ${url}`)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          WhatsApp invite
+        </a>
+        <Link to={`/compatibility?a=${type.code.toLowerCase()}`} className="btn share-btn">
+          Already know their type?
+        </Link>
+      </div>
+    </section>
+  );
+};
+
 const ResultPage = () => {
   const { type: typeParam } = useParams();
   const location = useLocation();
@@ -53,7 +119,7 @@ const ResultPage = () => {
     const percentages = decodePercentages(params.get('p'));
     const last = loadLastResult();
     const isOwner = Boolean(last && type && last.type === type.code && (!name || last.name === name));
-    setClient({ name, percentages, isOwner });
+    setClient({ name, percentages, isOwner, invitedBy: isOwner ? last.invitedBy : null });
   }, [location.search, type]);
 
   useEffect(() => {
@@ -114,6 +180,7 @@ const ResultPage = () => {
         <p className="result-kicker">{isOwner ? `${name}, your personality type is…` : 'Personality type'}</p>
         <h1 className="result-name">{heading}</h1>
         <p className="result-description">{type.description}</p>
+        {client?.invitedBy && <InviterMatch type={type} inviter={client.invitedBy} />}
         <div className="spirit-animal-section">
           <img
             src={getAnimalImage(type.spiritAnimal)}
@@ -137,15 +204,26 @@ const ResultPage = () => {
 
         {!isOwner && (
           <div className="friend-cta">
-            <p>{name ? `Are you like ${name}?` : 'Curious about your own type?'} Find out in about 10 minutes.</p>
-            <Link to="/test" className="btn btn-primary bouncing">Take the Free Personality Test</Link>
+            <p>
+              {name ? `Are you like ${name}? Take the test to see your type and how compatible you two are.` : 'Curious about your own type?'}{' '}
+              It takes about 10 minutes.
+            </p>
+            <Link
+              to={name ? `/test?ref=${type.code.toLowerCase()}&rn=${encodeURIComponent(name)}` : '/test'}
+              className="btn btn-primary bouncing"
+            >
+              Take the Free Personality Test
+            </Link>
           </div>
         )}
 
         <ShareSheet type={type} name={name} breakdown={breakdown} url={shareUrl} isOwner={isOwner} />
 
+        {isOwner && <InviteFriend type={type} name={name} />}
+
         <div className="results-buttons-container">
           <a href="#full-profile" className="btn btn-primary">See the full profile ↓</a>
+          <Link to={`/types/${type.code.toLowerCase()}`} className="btn">All about {type.code}</Link>
           {isOwner && <Link to="/test" className="btn">Take the Test Again</Link>}
         </div>
       </div>

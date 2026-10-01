@@ -349,3 +349,13 @@
     gap: 0.25rem;
   }
 }
+
+.invite-banner {
+  background: #fff7e8;
+  border: 2px dashed var(--bright-orange);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  margin: 0.5rem 0 1.25rem;
+  font-weight: 700;
+  color: var(--deep-purple);
+}

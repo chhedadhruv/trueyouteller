@@ -46,3 +46,10 @@ export const resultPath = ({ type, name, percentages }) => {
   return `/result/${type.toLowerCase()}${query ? `?${query}` : ''}`;
 };
 export const resultUrl = (result) => `${SITE_URL}${resultPath(result)}`;
+
+// Invite link: a friend who opens it and finishes the test sees their compatibility with the inviter.
+export const inviteUrl = ({ type, name }) => {
+  const params = new URLSearchParams({ ref: type.toLowerCase() });
+  if (name) params.set('rn', name);
+  return `${SITE_URL}/test?${params}`;
+};

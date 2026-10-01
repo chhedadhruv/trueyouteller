@@ -1,6 +1,7 @@
 // Generates 1200x630 social share images into public/og/:
 //   default.png       site-wide card
 //   {type}.png ×16    one per personality type (e.g. intj.png)
+//   compatibility.png compatibility checker pages
 // Usage: node scripts/generate-og.mjs  (re-run after changing type names or branding)
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import satori from 'satori';
@@ -76,6 +77,44 @@ await render(
     )
   ),
   'default.png'
+);
+
+const circle = (src) =>
+  h(
+    'div',
+    {
+      display: 'flex',
+      width: 260,
+      height: 260,
+      borderRadius: 130,
+      background: '#ffffff',
+      border: `8px solid ${PURPLE}`,
+      alignItems: 'center',
+      justifyContent: 'center',
+      overflow: 'hidden',
+    },
+    img(src, { width: 220, height: 220, objectFit: 'contain' })
+  );
+
+await render(
+  frame(
+    h(
+      'div',
+      { display: 'flex', flexDirection: 'column', flex: 1, marginRight: 30 },
+      h('div', { fontSize: 32, fontWeight: 800, color: ORANGE, letterSpacing: 2 }, '16 PERSONALITY TYPES'),
+      h('div', { fontFamily: 'Chewy', fontSize: 88, color: PURPLE, lineHeight: 1.05 }, 'Compatibility Checker'),
+      h('div', { fontSize: 34, marginTop: 18 }, 'How well do your types match? See your score, strengths and clashes.'),
+      siteUrl
+    ),
+    h(
+      'div',
+      { display: 'flex', alignItems: 'center' },
+      circle(await toDataUrl('src/images/animals/owl.webp', 260)),
+      h('div', { fontSize: 72, margin: '0 -10px', zIndex: 2, color: ORANGE, fontWeight: 800 }, '+'),
+      circle(await toDataUrl('src/images/animals/dolphin.webp', 260))
+    )
+  ),
+  'compatibility.png'
 );
 
 for (const type of Object.values(PERSONALITY_TYPES)) {
