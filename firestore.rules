@@ -1,0 +1,25 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Test results: anyone can submit a well-formed result; nobody can read,
+    // edit or delete them from the client (view them in the Firebase console).
+    match /personalityTestResults/{id} {
+      allow create: if request.resource.data.keys().hasOnly(
+                         ['name', 'personalityType', 'personalityName', 'answers', 'timestamp', 'createdAt'])
+                    && request.resource.data.name is string
+                    && request.resource.data.name.size() <= 40
+                    && request.resource.data.personalityType is string
+                    && request.resource.data.personalityType.matches('^[EI][SN][TF][JP]$')
+                    && request.resource.data.answers is list
+                    && request.resource.data.answers.size() <= 60
+                    && request.resource.data.timestamp == request.time;
+      allow read, update, delete: if false;
+    }
+
+    // Everything else is closed by default.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

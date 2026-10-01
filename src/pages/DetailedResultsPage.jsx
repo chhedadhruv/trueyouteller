@@ -1,8 +1,17 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link } from 'react-router';
 import '../styles/DetailedResultsPage.css';
 import { FaStar, FaBriefcase, FaHeart, FaUsers, FaFilm } from 'react-icons/fa';
+import { getAnimalImage, getCelebrityImage } from '../utils/images';
+import { buildMeta } from '../utils/seo';
+
+export const meta = () =>
+  buildMeta({
+    title: 'Your Detailed Personality Profile | TrueYouTeller',
+    description: 'Your detailed personality profile: strengths, weaknesses, career insights, relationships and famous matches.',
+    path: '/detailed-results',
+    noindex: true,
+  });
 
 const DetailedResultsPage = () => {
   const location = useLocation();
@@ -11,24 +20,12 @@ const DetailedResultsPage = () => {
   if (!result) {
     return (
       <div className="container section">
-        <Helmet>
-          <title>Detailed Results | TrueYouTeller</title>
-          <meta name="description" content="Complete the personality test to see your detailed results and discover your true self." />
-        </Helmet>
-        <h2>Oops! No result found.</h2>
+        <h1 className="page-title">Oops! No result found.</h1>
         <p>It seems you've accessed this page directly. Please take the test first to see your results.</p>
         <Link to="/" className="btn btn-primary">Back to Home</Link>
       </div>
     );
   }
-
-  const getSpiritAnimalImage = (spiritAnimal) => {
-    let animalName = spiritAnimal.split(' ')[1].toLowerCase();
-    if (animalName === 'dolphin') {
-      animalName = 'dophin';
-    }
-    return new URL(`../assets/animals/${animalName}.jpg`, import.meta.url).href;
-  };
 
   const renderList = (items) => (
     <ul>
@@ -38,12 +35,8 @@ const DetailedResultsPage = () => {
 
   return (
     <div className="detailed-results-page container section">
-      <Helmet>
-        <title>Detailed Personality Results for {result.name} ({result.code}) | TrueYouTeller</title>
-        <meta name="description" content={`Dive deep into your personality as a ${result.name} (${result.code}). Explore your strengths, weaknesses, career insights, and more.`} />
-      </Helmet>
       <header className="detailed-header">
-        <img src={getSpiritAnimalImage(result.spiritAnimal)} alt={result.spiritAnimal} className="spirit-animal-image-detailed" />
+        <img src={getAnimalImage(result.spiritAnimal)} alt={result.spiritAnimal} className="spirit-animal-image-detailed" />
         <h1>{result.name} ({result.code})</h1>
         <p className="detailed-header-description">{result.description}</p>
       </header>
@@ -170,23 +163,19 @@ const DetailedResultsPage = () => {
         <h2><FaFilm /> Cultural Connections</h2>
         <p>For fun, here are some famous celebrities or fictional characters that may share your personality type. This is just for illustrative purposes!</p>
         <div className="famous-matches-container">
-            {result.culturalConnections.famousMatches.map(match => {
-                const imageName = match
-                    .replace(/\s*\(.*\)\s*/g, '')
-                    .replace(/\./g, '')
-                    .replace(/\s+/g, '-')
-                    .trim();
-
-                const extension = match === 'Lisa Simpson' ? 'jpeg' : 'png';
-                const imageUrl = new URL(`../assets/famousMatches/${result.code}/${imageName}.${extension}`, import.meta.url).href;
-
-                return (
-                    <div className="celebrity-card" key={match}>
-                        <img src={imageUrl} alt={match} className="celebrity-image" />
-                        <p className="celebrity-name">{match}</p>
-                    </div>
-                );
-            })}
+            {result.culturalConnections.famousMatches.map(match => (
+                <div className="celebrity-card" key={match}>
+                    <img
+                        src={getCelebrityImage(result.code, match)}
+                        alt={match}
+                        className="celebrity-image"
+                        loading="lazy"
+                        width="360"
+                        height="540"
+                    />
+                    <p className="celebrity-name">{match}</p>
+                </div>
+            ))}
         </div>
       </div>
     </div>

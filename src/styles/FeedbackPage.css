@@ -11,6 +11,7 @@
   border: 3px solid var(--bright-orange);
 }
 
+.feedback-content h1,
 .feedback-content h2 {
   text-align: center;
   color: var(--deep-purple);
@@ -153,6 +154,7 @@
     margin: 0 15px;
   }
   
+  .feedback-content h1,
   .feedback-content h2 {
     font-size: 2rem;
   }
@@ -174,6 +176,7 @@
     padding: 20px 15px;
   }
   
+  .feedback-content h1,
   .feedback-content h2 {
     font-size: 1.8rem;
   }

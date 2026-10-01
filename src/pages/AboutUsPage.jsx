@@ -1,7 +1,7 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
-import Dhruv from '../assets/creators/dhruv.png';
-import Sanaj from '../assets/creators/sanaj.png';
+import Dhruv from '../images/creators/dhruv.webp';
+import Sanaj from '../images/creators/sanaj.webp';
+import { buildMeta } from '../utils/seo';
 import '../styles/AboutUsPage.css';
 import TeamMemberCard from '../components/TeamMemberCard';
 
@@ -22,15 +22,18 @@ const teamMembers = [
   },
 ];
 
+export const meta = () =>
+  buildMeta({
+    title: 'About TrueYouTeller - Our Story and Mission',
+    description: 'Learn about the story and mission behind TrueYouTeller, the free and fun 16-type personality test. Meet the team helping you discover your true self.',
+    path: '/about',
+  });
+
 const AboutUsPage = () => {
   return (
     <div className="about-us-container container section">
-      <Helmet>
-        <title>About TrueYouTeller - Our Story and Mission</title>
-        <meta name="description" content="Learn about the story and mission behind TrueYouTeller. Meet the team dedicated to helping you discover your true self through fun and insightful personality quizzes." />
-      </Helmet>
       <div className="about-us-content">
-        <h2>About TrueYouTeller</h2>
+        <h1 className="page-title">About TrueYouTeller</h1>
         <p>
           Welcome to TrueYouTeller, your magical guide to self-discovery! We believe that understanding your personality is the first step towards a more authentic and fulfilling life. Our fun and insightful personality test is designed to reveal the unique traits that make you, you.
         </p>

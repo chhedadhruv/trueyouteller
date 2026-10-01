@@ -10,7 +10,7 @@
 [![Powered by Vite](https://img.shields.io/badge/Powered%20by-Vite-646cff?style=for-the-badge&logo=vite)](https://vitejs.dev/)
 [![Firebase](https://img.shields.io/badge/Firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com/)
 
-[🚀 Live Demo](#) • [📖 Documentation](#features) • [🎮 Mini Games](#mini-games) • [📞 Contact](#contact--support)
+[🚀 Live Demo](https://www.trueyouteller.com) • [📖 Documentation](#features) • [🎮 Mini Games](#mini-games) • [📞 Contact](#contact--support)
 
 </div>
 
@@ -63,7 +63,7 @@ Make sure you have the following installed:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your_username/trueyouteller.git
+   git clone https://github.com/chhedadhruv/trueyouteller.git
    cd trueyouteller
    ```
 
@@ -72,21 +72,33 @@ Make sure you have the following installed:
    yarn install
    ```
 
-3. **Start the development server**
+3. **Add environment variables**: copy `.env.example` to `.env` and fill in your Firebase and EmailJS keys.
+
+4. **Start the development server**
    ```bash
    yarn dev
    ```
 
-4. **Open your browser** and navigate to `http://localhost:5173` 🎉
+5. **Open your browser** and navigate to `http://localhost:5173` 🎉
 
 ## 📜 Available Scripts
 
 | Command | Description |
 |---------|-------------|
 | `yarn dev` | 🏃‍♂️ Runs the app in development mode |
-| `yarn build` | 🏗️ Builds the app for production |
-| `yarn preview` | 👀 Preview the production build locally |
+| `yarn build` | 🏗️ Builds the app, prerenders every SEO page to static HTML and writes `sitemap.xml` |
+| `yarn deploy` | 🚀 Builds and deploys to Firebase Hosting |
 | `yarn lint` | 🔍 Lints the project files |
+| `yarn images:optimize` | 🖼️ Converts images in `src/assets` into small WebP files in `src/images` |
+| `yarn og:generate` | 🃏 Regenerates the social share images in `public/og/` |
+
+To preview the production build exactly as Firebase serves it, run `yarn build` and then `firebase emulators:start --only hosting` (http://localhost:5055).
+
+### 🔎 SEO
+
+- Indexable routes are listed in `src/seoRoutes.js`. They are prerendered at build time and added to the sitemap.
+- Each page sets its title, description, canonical URL, Open Graph/Twitter tags and JSON-LD through a `meta` export built with `buildMeta()` in `src/utils/seo.js`.
+- The canonical domain is `https://www.trueyouteller.com`.
 
 ## 🎭 Personality Types
 
@@ -120,7 +132,14 @@ trueyouteller/
 │   │   ├── ❓ questions.js
 │   │   └── 📁 mini-games/
 │   ├── 📁 styles/          # CSS styling files
-│   └── 📁 assets/          # Images and static assets
+│   ├── 📁 images/          # Optimized WebP images used by the app
+│   ├── 📁 utils/           # SEO and image helpers
+│   ├── 📄 root.jsx         # HTML shell, navbar, footer, error page
+│   ├── 📄 routes.js        # Route table
+│   └── 📄 seoRoutes.js     # Prerendered + sitemap routes
+├── 📁 public/og/           # Social share images
+├── 📁 scripts/             # Image, OG and sitemap generators
+├── 📄 firebase.json        # Hosting + Firestore rules config
 └── 📄 package.json
 ```
 
@@ -130,11 +149,10 @@ trueyouteller/
 
 | Technology | Purpose | Version |
 |------------|---------|---------|
-| ⚛️ **React** | Frontend Framework | 18+ |
+| ⚛️ **React** | Frontend Framework | 19 |
 | ⚡ **Vite** | Build Tool & Dev Server | Latest |
 | 🔥 **Firebase** | Backend & Hosting | Latest |
-| 🧭 **React Router** | Navigation | 6+ |
-| 🪖 **React Helmet** | SEO & Meta Tags | Latest |
+| 🧭 **React Router** | Routing, prerendering & meta tags | 7 |
 | 🎨 **CSS3** | Styling | Latest |
 
 </div>

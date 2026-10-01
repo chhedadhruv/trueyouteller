@@ -1,0 +1,27 @@
+.privacy-page {
+  max-width: 800px;
+}
+
+.privacy-page h2 {
+  font-size: 1.8rem;
+  margin-top: 30px;
+}
+
+.privacy-page p,
+.privacy-page li {
+  margin-bottom: 10px;
+}
+
+.privacy-page ul {
+  padding-left: 25px;
+}
+
+.privacy-page a {
+  color: var(--deep-purple);
+  font-weight: 700;
+}
+
+.privacy-updated {
+  font-style: italic;
+  opacity: 0.8;
+}

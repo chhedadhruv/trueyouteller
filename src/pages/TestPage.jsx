@@ -1,8 +1,28 @@
 import React, { useState } from 'react';
-import { Helmet } from 'react-helmet';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import { questions, answerOptions } from '../data/questions';
+import { buildMeta, SITE_URL } from '../utils/seo';
 import '../styles/TestPage.css';
+
+export const meta = () =>
+  buildMeta({
+    title: 'Take the Free Personality Test (50 Questions) | TrueYouTeller',
+    description:
+      'Start the free TrueYouTeller personality test. Rate 50 fun statements and discover your 16-type personality and spirit animal in about 10 minutes. No sign-up needed.',
+    path: '/test',
+    jsonLd: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Quiz',
+        name: 'TrueYouTeller Free Personality Test',
+        about: '16 personality types',
+        educationalUse: 'self-assessment',
+        url: `${SITE_URL}/test`,
+        isAccessibleForFree: true,
+        timeRequired: 'PT10M',
+      },
+    ],
+  });
 
 const TestPage = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -62,17 +82,16 @@ const TestPage = () => {
   if (!nameSubmitted) {
     return (
       <div className="test-container container section">
-        <Helmet>
-          <title>Personality Test - Discover Your True Self | TrueYouTeller</title>
-          <meta name="description" content="Start the TrueYouTeller personality test to discover your true self. Answer a series of fun and engaging questions to get your instant results." />
-        </Helmet>
         <div className="test-card">
-          <h2 className="welcome-heading">Welcome to the Test</h2>
+          <h1 className="welcome-heading">Free Personality Test</h1>
           <p className="welcome-subheading">Please enter your name to begin.</p>
           <form onSubmit={handleNameSubmit} className="name-form">
             <div className="name-input-container">
+              <label htmlFor="test-name" className="visually-hidden">Your name or nickname</label>
               <input
+                id="test-name"
                 type="text"
+                maxLength={40}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter your name"
@@ -86,6 +105,9 @@ const TestPage = () => {
               Start Test
             </button>
           </form>
+          <p className="privacy-note">
+            Your name and answers are saved to improve the test. See our <Link to="/privacy">privacy policy</Link>.
+          </p>
         </div>
       </div>
     );
@@ -93,17 +115,21 @@ const TestPage = () => {
 
   return (
     <div className="test-container container section">
-      <Helmet>
-        <title>Personality Test - Discover Your True Self | TrueYouTeller</title>
-        <meta name="description" content="Start the TrueYouTeller personality test to discover your true self. Answer a series of fun and engaging questions to get your instant results." />
-      </Helmet>
       <div className="test-card">
-        <div className="progress-bar-container">
+        <h1 className="visually-hidden">Free Personality Test</h1>
+        <div
+          className="progress-bar-container"
+          role="progressbar"
+          aria-label="Test progress"
+          aria-valuemin={1}
+          aria-valuemax={questions.length}
+          aria-valuenow={currentQuestionIndex + 1}
+        >
           <div className="progress-bar" style={{ width: `${progress}%` }}></div>
         </div>
         <div className="question-section">
           <p className="statement-label">Statement {currentQuestionIndex + 1}/{questions.length}</p>
-          <p className="question-text">{currentQuestion.statement}</p>
+          <p className="question-text" aria-live="polite">{currentQuestion.statement}</p>
         </div>
         <div className="answer-section likert-scale">
           {answerOptions.map((option) => (

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { quizData } from '../../../data/mini-games/insideOutQuizData';
 import Question from './Question';
 import Result from './Result';
-import insideOutImage from '../../../assets/miniGames/insideOut.png';
+import insideOutImage from '../../../images/miniGames/insideout.webp';
+import QuizModal from '../QuizModal';
 import '../../../styles/InsideOutQuiz.css';
 
 const characterScores = {
@@ -49,14 +50,16 @@ const InsideOutQuiz = () => {
     setResult(null);
   }
 
+  const closeQuiz = useCallback(() => setIsQuizStarted(false), []);
+
   if (!isQuizStarted) {
     return (
       <div className="friends-quiz-card">
         <div className="quiz-image-container">
-            <img src={insideOutImage} alt="Inside Out Cast" className="quiz-image" />
+            <img src={insideOutImage} alt="Inside Out Cast" className="quiz-image" loading="lazy" />
         </div>
         <div className="quiz-content">
-          <h1 className="quiz-title">Which Inside Out Character Are You?</h1>
+          <h2 className="quiz-title">Which Inside Out Character Are You?</h2>
           <p className="quiz-description">
             Ever wondered which of the emotional characters from Inside Out you're most like? Take this quiz to find out!
           </p>
@@ -69,9 +72,7 @@ const InsideOutQuiz = () => {
   }
 
   return (
-    <div className="quiz-modal">
-      <div className="quiz-modal-content">
-        <button className="close-modal-btn" onClick={() => setIsQuizStarted(false)}>&times;</button>
+    <QuizModal title="Which Inside Out Character Are You?" onClose={closeQuiz}>
         {result ? (
           <>
             <Result result={result} />
@@ -85,8 +86,7 @@ const InsideOutQuiz = () => {
             onAnswer={handleAnswer}
           />
         )}
-      </div>
-    </div>
+    </QuizModal>
   );
 };
 

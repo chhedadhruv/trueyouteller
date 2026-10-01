@@ -1,0 +1,10 @@
+// Indexable routes: prerendered to static HTML and listed in sitemap.xml.
+// Plain JS (no JSX/assets) so react-router.config.js and scripts/ can import it.
+export const SEO_ROUTES = [
+  { path: '/', priority: 1.0, changefreq: 'weekly' },
+  { path: '/test', priority: 0.9, changefreq: 'monthly' },
+  { path: '/about', priority: 0.5, changefreq: 'yearly' },
+  { path: '/contact', priority: 0.3, changefreq: 'yearly' },
+  { path: '/feedback', priority: 0.3, changefreq: 'yearly' },
+  { path: '/privacy', priority: 0.2, changefreq: 'yearly' },
+];

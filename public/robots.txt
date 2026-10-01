@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://trueyouteller.dhruvchheda.com/sitemap.xml 
+Sitemap: https://www.trueyouteller.com/sitemap.xml

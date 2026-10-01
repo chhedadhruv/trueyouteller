@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { quizData } from '../../../data/mini-games/friendsQuizData';
 import Question from './Question';
 import Result from './Result';
 import '../../../styles/FriendsQuiz.css';
-import friendsImage from '../../../assets/miniGames/friends.png';
+import friendsImage from '../../../images/miniGames/friends.webp';
+import QuizModal from '../QuizModal';
 
 const characterScores = {
   'Monica Geller': 0,
@@ -64,14 +65,16 @@ const FriendsQuiz = () => {
     setResult(null);
   }
 
+  const closeQuiz = useCallback(() => setIsQuizStarted(false), []);
+
   if (!isQuizStarted) {
     return (
       <div className="friends-quiz-card">
         <div className="quiz-image-container">
-            <img src={friendsImage} alt="Friends Cast" className="quiz-image" />
+            <img src={friendsImage} alt="Friends Cast" className="quiz-image" loading="lazy" />
         </div>
         <div className="quiz-content">
-          <h1 className="quiz-title">Which FRIENDS Character Are You?</h1>
+          <h2 className="quiz-title">Which FRIENDS Character Are You?</h2>
           <p className="quiz-description">
             Ever wondered which of the iconic FRIENDS characters you're most like? Take this quiz to find out!
           </p>
@@ -84,9 +87,7 @@ const FriendsQuiz = () => {
   }
 
   return (
-    <div className="quiz-modal">
-      <div className="quiz-modal-content">
-        <button className="close-modal-btn" onClick={() => setIsQuizStarted(false)}>&times;</button>
+    <QuizModal title="Which FRIENDS Character Are You?" onClose={closeQuiz}>
         {result ? (
           <>
             <Result result={result} />
@@ -100,8 +101,7 @@ const FriendsQuiz = () => {
             onAnswer={handleAnswer}
           />
         )}
-      </div>
-    </div>
+    </QuizModal>
   );
 };
 

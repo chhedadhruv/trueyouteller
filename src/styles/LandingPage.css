@@ -201,3 +201,36 @@
     margin-bottom: 2rem;
   }
 } 
+/* FAQ */
+.faq-section {
+  max-width: 850px;
+}
+
+.faq-section h2 {
+  text-align: center;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 1.5rem;
+}
+
+.faq-item {
+  background: var(--white);
+  border-radius: 15px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 4px 12px rgba(91, 44, 111, 0.08);
+}
+
+.faq-item summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--deep-purple);
+  font-size: 1.1rem;
+}
+
+.faq-item p {
+  margin-top: 0.75rem;
+}

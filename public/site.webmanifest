@@ -1,1 +1,13 @@
-{"name":"","short_name":"","icons":[{"src":"/android-chrome-192x192.png","sizes":"192x192","type":"image/png"},{"src":"/android-chrome-512x512.png","sizes":"512x512","type":"image/png"}],"theme_color":"#ffffff","background_color":"#ffffff","display":"standalone"}
+{
+  "name": "TrueYouTeller - Free Personality Test",
+  "short_name": "TrueYouTeller",
+  "description": "Discover your 16-type personality and spirit animal with a free, fun personality test.",
+  "start_url": "/",
+  "icons": [
+    { "src": "/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#5B2C6F",
+  "background_color": "#E8DAEF",
+  "display": "standalone"
+}

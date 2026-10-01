@@ -133,3 +133,100 @@ h3 {
     padding: 40px 0;
   }
 }
+
+/* Page headings that were visually h2-sized before becoming the page's h1 */
+h1.page-title {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+  h1.page-title { font-size: 2rem; }
+}
+
+/* Keyboard focus is always visible, even where components remove outlines */
+:focus-visible {
+  outline: 3px solid var(--bright-orange) !important;
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.page-loading {
+  text-align: center;
+  color: var(--deep-purple);
+}
+
+.error-page {
+  text-align: center;
+}
+
+.error-page p {
+  margin-bottom: 25px;
+}
+
+/* Footer */
+.site-footer {
+  background: var(--deep-purple);
+  color: var(--lavender);
+  padding: 40px 0 25px;
+  margin-top: 40px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 25px;
+}
+
+.site-footer h2 {
+  color: var(--white);
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+.site-footer ul {
+  list-style: none;
+}
+
+.site-footer li {
+  margin-bottom: 6px;
+}
+
+.site-footer a {
+  color: var(--lavender);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: var(--bright-orange);
+}
+
+.footer-bottom {
+  margin-top: 30px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(232, 218, 239, 0.25);
+  font-size: 0.9rem;
+  text-align: center;
+}

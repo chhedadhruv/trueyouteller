@@ -25,3 +25,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# React Router build output
+build
+.react-router
+
+# Firebase
+.firebase
