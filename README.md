@@ -96,6 +96,10 @@ Make sure you have the following installed:
 
 To preview the production build exactly as Firebase serves it, run `yarn build` and then `firebase emulators:start --only hosting` (http://localhost:5055).
 
+### 🚀 Launching
+
+See [docs/LAUNCH_CHECKLIST.md](docs/LAUNCH_CHECKLIST.md) for Firebase deploy, custom domains, Google Analytics, Search Console and the list of analytics events.
+
 ### 🔎 SEO
 
 - Indexable routes are listed in `src/seoRoutes.js`. They are prerendered at build time and added to the sitemap.

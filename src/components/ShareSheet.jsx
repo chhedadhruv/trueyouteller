@@ -3,11 +3,16 @@ import { FaWhatsapp, FaXTwitter, FaFacebook, FaLink, FaDownload, FaFilePdf, FaSh
 import { copyText, downloadBlob, downloadProfilePdf, nativeShare, shareLinks } from '../utils/share';
 import { drawShareCard } from '../utils/shareCard';
 import { awardBadge } from '../utils/badges';
+import { track } from '../utils/analytics';
 import { SITE_URL } from '../utils/seo';
 
 // Share actions for a result: native share (with image) where available, otherwise
 // WhatsApp / X / Facebook / copy link, plus image and PDF downloads.
 const ShareSheet = ({ type, name, breakdown, url, isOwner }) => {
+  const shared = (method) => {
+    awardBadge('sharer');
+    track('share', { method, content_type: 'personality_result', item_id: type.code });
+  };
   const [canNativeShare, setCanNativeShare] = useState(false);
   const [status, setStatus] = useState('');
   const [busy, setBusy] = useState(false);
@@ -26,11 +31,11 @@ const ShareSheet = ({ type, name, breakdown, url, isOwner }) => {
   const links = shareLinks({ text, url });
   const filename = `trueyouteller-${type.code.toLowerCase()}.png`;
 
-  const withBusy = async (task) => {
+  const withBusy = async (method, task) => {
     setBusy(true);
     try {
       await task();
-      awardBadge('sharer');
+      shared(method);
     } catch (error) {
       console.error(error);
       setStatus('Something went wrong. Please try again.');
@@ -40,27 +45,27 @@ const ShareSheet = ({ type, name, breakdown, url, isOwner }) => {
   };
 
   const handleNativeShare = () =>
-    withBusy(async () => {
+    withBusy('native', async () => {
       const blob = await drawShareCard({ type, name, breakdown });
       const file = blob && new File([blob], filename, { type: 'image/png' });
       await nativeShare({ title: `${type.code} · ${type.name}`, text, url, file });
     });
 
   const handleDownloadImage = () =>
-    withBusy(async () => {
+    withBusy('story_image', async () => {
       downloadBlob(await drawShareCard({ type, name, breakdown }), filename);
       setStatus('Image downloaded! Post it to your story 📸');
     });
 
   const handleDownloadPdf = () =>
-    withBusy(async () => {
+    withBusy('pdf', async () => {
       await downloadProfilePdf({ type, name, breakdown, url: SITE_URL });
     });
 
   const handleCopy = async () => {
     const copied = await copyText(url);
     setStatus(copied ? 'Link copied!' : 'Could not copy. Long-press the address bar instead.');
-    if (copied) awardBadge('sharer');
+    if (copied) shared('copy_link');
   };
 
   return (
@@ -72,13 +77,13 @@ const ShareSheet = ({ type, name, breakdown, url, isOwner }) => {
             <FaShareNodes aria-hidden="true" /> Share
           </button>
         )}
-        <a className="btn share-btn share-whatsapp" href={links.whatsapp} target="_blank" rel="noopener noreferrer" onClick={() => awardBadge('sharer')}>
+        <a className="btn share-btn share-whatsapp" href={links.whatsapp} target="_blank" rel="noopener noreferrer" onClick={() => shared('whatsapp')}>
           <FaWhatsapp aria-hidden="true" /> WhatsApp
         </a>
-        <a className="btn share-btn" href={links.x} target="_blank" rel="noopener noreferrer" onClick={() => awardBadge('sharer')}>
+        <a className="btn share-btn" href={links.x} target="_blank" rel="noopener noreferrer" onClick={() => shared('x')}>
           <FaXTwitter aria-hidden="true" /> X
         </a>
-        <a className="btn share-btn" href={links.facebook} target="_blank" rel="noopener noreferrer" onClick={() => awardBadge('sharer')}>
+        <a className="btn share-btn" href={links.facebook} target="_blank" rel="noopener noreferrer" onClick={() => shared('facebook')}>
           <FaFacebook aria-hidden="true" /> Facebook
         </a>
         <button type="button" className="btn share-btn" onClick={handleCopy}>

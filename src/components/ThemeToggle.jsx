@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaMoon, FaSun } from 'react-icons/fa';
 import { awardBadge } from '../utils/badges';
+import { track } from '../utils/analytics';
 
 export const THEME_KEY = 'tyt:theme';
 
@@ -21,6 +22,7 @@ const ThemeToggle = () => {
       // Not remembered, but still switches for this visit.
     }
     setTheme(next);
+    track('theme_change', { theme: next });
     if (next === 'dark') awardBadge('night-owl');
   };
 

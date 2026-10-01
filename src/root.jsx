@@ -2,6 +2,7 @@ import { Links, Meta, Outlet, Scripts, ScrollRestoration, isRouteErrorResponse, 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import BadgeToast from './components/BadgeToast';
+import AnalyticsNotice from './components/AnalyticsNotice';
 import { themeInitScript } from './components/ThemeToggle';
 import './styles/App.css';
 
@@ -37,6 +38,7 @@ export function Layout({ children }) {
           <Footer />
         </div>
         <BadgeToast />
+        <AnalyticsNotice />
         <ScrollRestoration />
         <Scripts />
       </body>

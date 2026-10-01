@@ -1,3 +1,5 @@
+import { track } from './analytics';
+
 // Fun, browser-only achievements. Stored in localStorage; unlocking one fires a
 // "tyt:badge" window event that the BadgeToast component shows.
 export const BADGES = [
@@ -36,6 +38,7 @@ export const awardBadge = (id) => {
   const owned = loadBadges();
   if (owned.includes(id)) return;
   write(KEY, [...owned, id]);
+  track('unlock_achievement', { achievement_id: id });
   const badge = BADGES.find((b) => b.id === id);
   if (badge && typeof window !== 'undefined') {
     window.dispatchEvent(new CustomEvent('tyt:badge', { detail: badge }));

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { buildMeta } from '../utils/seo';
+import AnalyticsPreference from '../components/AnalyticsPreference';
 import '../styles/PrivacyPage.css';
 
 export const meta = () =>
@@ -40,6 +41,21 @@ const PrivacyPage = () => (
     <p>
       Messages you send through the <Link to="/contact">Contact</Link> or <Link to="/feedback">Feedback</Link> forms
       are delivered to us by email (via EmailJS) along with the name and email address you provide, so we can reply.
+    </p>
+
+    <h2>Analytics</h2>
+    <p>
+      We use Google Analytics 4 (through Firebase) to understand how the site is used: which pages are visited, how
+      many people finish the test or a quiz, which results are shared, and roughly which country and device visitors
+      use. Google Analytics sets cookies and receives your IP address, which Google uses to estimate location. We don't
+      send your name or answers to Google Analytics.
+    </p>
+    <AnalyticsPreference />
+
+    <h2>Stored on your device</h2>
+    <p>
+      To make the site work without an account, your browser keeps your in-progress test, your last result, your
+      badges, your theme and your analytics choice in local storage. Clearing your browser data removes them.
     </p>
 
     <h2>Where it's stored</h2>

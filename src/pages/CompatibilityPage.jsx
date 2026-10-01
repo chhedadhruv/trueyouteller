@@ -5,6 +5,7 @@ import { getCompatibility, pairSlug, parsePairSlug, topMatches, TYPE_CODES } fro
 import { getAnimalImage } from '../utils/images';
 import { loadLastResult } from '../utils/storage';
 import { awardBadge } from '../utils/badges';
+import { track } from '../utils/analytics';
 import { breadcrumbJsonLd, buildMeta, SITE_URL } from '../utils/seo';
 import Breadcrumbs from '../components/Breadcrumbs';
 import '../styles/DetailedResultsPage.css';
@@ -103,7 +104,10 @@ const TypeBadge = ({ type }) => (
 
 const PairView = ({ pair }) => {
   const { a, b, score, tier, axes } = getCompatibility(...pair);
-  useEffect(() => awardBadge('matchmaker'), []);
+  useEffect(() => {
+    awardBadge('matchmaker');
+    track('compat_check', { pair: pairSlug(a.code, b.code), score });
+  }, [a.code, b.code, score]);
   const others = topMatches(a.code, 4).filter(({ code }) => code !== b.code).slice(0, 3);
 
   return (

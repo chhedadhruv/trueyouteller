@@ -5,6 +5,7 @@ import { axisBreakdown, decodePercentages } from '../utils/scoring';
 import { inviteUrl, loadLastResult, resultUrl } from '../utils/storage';
 import { getCompatibility, pairSlug } from '../data/compatibility';
 import { awardBadge } from '../utils/badges';
+import { track } from '../utils/analytics';
 import { getAnimalImage } from '../utils/images';
 import { buildMeta, SITE_URL } from '../utils/seo';
 import AxisBars from '../components/AxisBars';
@@ -41,6 +42,7 @@ const celebrate = async () => {
 // Shown to someone who took the test from a friend's invite link.
 const InviterMatch = ({ type, inviter }) => {
   const { score, tier } = getCompatibility(type.code, inviter.type);
+  useEffect(() => track('invite_match', { pair: pairSlug(type.code, inviter.type), score }), [type.code, inviter.type, score]);
   const who = inviter.name || 'your friend';
   return (
     <div className="inviter-match">
@@ -64,6 +66,7 @@ const InviteFriend = ({ type, name }) => {
 
   const share = async () => {
     awardBadge('inviter');
+    track('invite_send', { method: navigator.share ? 'native' : 'copy', personality_type: type.code });
     if (navigator.share) {
       try {
         await navigator.share({ title: 'Are we compatible?', text, url });
@@ -93,7 +96,10 @@ const InviteFriend = ({ type, name }) => {
           href={`https://wa.me/?text=${encodeURIComponent(`${text} ${url}`)}`}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => awardBadge('inviter')}
+          onClick={() => {
+            awardBadge('inviter');
+            track('invite_send', { method: 'whatsapp', personality_type: type.code });
+          }}
         >
           WhatsApp invite
         </a>

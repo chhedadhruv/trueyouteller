@@ -12,6 +12,7 @@ export default defineConfig({
     include: [
       '@emailjs/browser',
       'canvas-confetti',
+      'firebase/analytics',
       'firebase/app',
       'firebase/firestore',
       'jspdf',

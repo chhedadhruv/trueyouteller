@@ -6,6 +6,7 @@ import { scoreAnswers } from '../utils/scoring';
 import { clearProgress, loadProgress, resultPath, saveLastResult, saveProgress } from '../utils/storage';
 import { saveTestResult } from '../firebase/config';
 import { awardBadge } from '../utils/badges';
+import { track } from '../utils/analytics';
 import { buildMeta, SITE_URL } from '../utils/seo';
 import '../styles/TestPage.css';
 
@@ -92,6 +93,7 @@ const TestPage = () => {
     setCurrentQuestionIndex(Math.min(savedProgress.index ?? 0, questions.length - 1));
     setStep(allAnswered ? 'review' : 'questions');
     setSavedProgress(null);
+    track('test_resume', { answered: savedProgress.answers.filter((a) => a !== null).length });
   };
 
   const startOver = () => {
@@ -110,14 +112,25 @@ const TestPage = () => {
       setAnswers(emptyAnswers());
       setCurrentQuestionIndex(0);
       setStep('questions');
+      track('test_start', { invited: invite ? 1 : 0 });
     }
   };
 
   const handleAnswerSelect = useCallback(
     (value) => {
       const newAnswers = [...answers];
+      const wasAnswered = newAnswers[currentQuestionIndex] !== null;
       newAnswers[currentQuestionIndex] = value;
       setAnswers(newAnswers);
+
+      // Funnel milestones: fire once as the answered count crosses 25/50/75%.
+      if (!wasAnswered) {
+        const answered = newAnswers.filter((answer) => answer !== null).length;
+        const percent = Math.floor((answered / questions.length) * 100);
+        const previous = Math.floor(((answered - 1) / questions.length) * 100);
+        const milestone = [25, 50, 75].find((m) => previous < m && percent >= m);
+        if (milestone) track('test_progress', { percent: milestone });
+      }
 
       const nextUnanswered = newAnswers.findIndex((answer, i) => answer === null && i > currentQuestionIndex);
       const firstUnanswered = newAnswers.indexOf(null);
@@ -155,6 +168,7 @@ const TestPage = () => {
     const result = { type, name, percentages, completedAt: new Date().toISOString(), invitedBy: invite };
     saveLastResult(result);
     awardBadge('first-test');
+    track('test_complete', { personality_type: type, invited: invite ? 1 : 0 });
     clearProgress();
     saveTestResult({
       name,

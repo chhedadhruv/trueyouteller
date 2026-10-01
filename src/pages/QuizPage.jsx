@@ -4,6 +4,7 @@ import { FaWhatsapp, FaXTwitter, FaLink, FaShareNodes } from 'react-icons/fa6';
 import { getQuiz, QUIZZES } from '../data/quizzes';
 import { scoreQuiz } from '../utils/quizEngine';
 import { awardBadge, trackProgress } from '../utils/badges';
+import { track } from '../utils/analytics';
 import { copyText, nativeShare, shareLinks } from '../utils/share';
 import { breadcrumbJsonLd, buildMeta, SITE_URL } from '../utils/seo';
 import Breadcrumbs from '../components/Breadcrumbs';
@@ -74,15 +75,18 @@ const QuizShare = ({ quiz, outcomeId, outcome }) => {
   const text = `${outcome.sharePhrase ?? `I got ${outcome.name}!`} ${quiz.title}`;
   const links = shareLinks({ text, url });
 
-  const shared = () => awardBadge('sharer');
+  const shared = (method) => {
+    awardBadge('sharer');
+    track('share', { method, content_type: 'quiz_result', item_id: `${quiz.slug}:${outcomeId}` });
+  };
   const handleNative = async () => {
     await nativeShare({ title: quiz.title, text, url });
-    shared();
+    shared('native');
   };
   const handleCopy = async () => {
     const ok = await copyText(url);
     setStatus(ok ? 'Link copied!' : 'Could not copy the link.');
-    if (ok) shared();
+    if (ok) shared('copy_link');
   };
 
   return (
@@ -93,10 +97,10 @@ const QuizShare = ({ quiz, outcomeId, outcome }) => {
             <FaShareNodes aria-hidden="true" /> Share
           </button>
         )}
-        <a className="btn share-btn" href={links.whatsapp} target="_blank" rel="noopener noreferrer" onClick={shared}>
+        <a className="btn share-btn" href={links.whatsapp} target="_blank" rel="noopener noreferrer" onClick={() => shared('whatsapp')}>
           <FaWhatsapp aria-hidden="true" /> WhatsApp
         </a>
-        <a className="btn share-btn" href={links.x} target="_blank" rel="noopener noreferrer" onClick={shared}>
+        <a className="btn share-btn" href={links.x} target="_blank" rel="noopener noreferrer" onClick={() => shared('x')}>
           <FaXTwitter aria-hidden="true" /> X
         </a>
         <button type="button" className="btn share-btn" onClick={handleCopy}>
@@ -132,6 +136,7 @@ const QuizPage = () => {
     setAnswers([]);
     setIndex(0);
     setStep('question');
+    track('quiz_start', { quiz: quiz.slug, from_shared_link: sharedOutcomeId ? 1 : 0 });
   };
 
   const answer = useCallback(
@@ -142,7 +147,9 @@ const QuizPage = () => {
         setIndex(index + 1);
         return;
       }
-      setOutcomeId(scoreQuiz(quiz, next));
+      const winner = scoreQuiz(quiz, next);
+      setOutcomeId(winner);
+      track('quiz_complete', { quiz: quiz.slug, outcome: winner });
       setStep('result');
       window.scrollTo({ top: 0, behavior: 'smooth' });
       awardBadge('quiz-rookie');

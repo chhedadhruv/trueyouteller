@@ -6,14 +6,22 @@ const firebaseConfig = {
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
   storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
+let appPromise;
 let dbPromise;
 
+// One Firebase app shared by Firestore and Analytics.
+export const getFirebaseApp = () => {
+  appPromise ??= import('firebase/app').then(({ initializeApp }) => initializeApp(firebaseConfig));
+  return appPromise;
+};
+
 export const getDb = () => {
-  dbPromise ??= Promise.all([import('firebase/app'), import('firebase/firestore')]).then(
-    ([{ initializeApp }, { getFirestore }]) => getFirestore(initializeApp(firebaseConfig))
+  dbPromise ??= Promise.all([getFirebaseApp(), import('firebase/firestore')]).then(([app, { getFirestore }]) =>
+    getFirestore(app)
   );
   return dbPromise;
 };
