@@ -89,6 +89,7 @@ Make sure you have the following installed:
 | `yarn build` | 🏗️ Builds the app, prerenders every SEO page to static HTML and writes `sitemap.xml` |
 | `yarn deploy` | 🚀 Builds and deploys to Firebase Hosting |
 | `yarn lint` | 🔍 Lints the project files |
+| `yarn test` | 🧪 Runs the scoring unit tests |
 | `yarn images:optimize` | 🖼️ Converts images in `src/assets` into small WebP files in `src/images` |
 | `yarn og:generate` | 🃏 Regenerates the social share images in `public/og/` |
 

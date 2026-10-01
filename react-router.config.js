@@ -1,4 +1,4 @@
-import { SEO_ROUTES } from './src/seoRoutes.js';
+import { SEO_ROUTES, SHARE_ROUTES } from './src/seoRoutes.js';
 
 // Static site: every indexable route is prerendered to HTML at build time so
 // search engines and link previews see real content. Other paths fall back to
@@ -6,5 +6,5 @@ import { SEO_ROUTES } from './src/seoRoutes.js';
 export default {
   appDirectory: 'src',
   ssr: false,
-  prerender: SEO_ROUTES.map((route) => route.path),
+  prerender: [...SEO_ROUTES.map((route) => route.path), ...SHARE_ROUTES],
 };

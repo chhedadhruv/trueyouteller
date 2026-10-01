@@ -139,3 +139,204 @@
   font-size: 0.9rem;
   color: var(--dark-navy);
 } 
+.result-kicker {
+  font-weight: 700;
+  color: var(--bright-orange);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.spirit-animal-section .spirit-animal-heading {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Reveal: suspense screen, then the card flips in */
+.reveal-card {
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.crystal-orb {
+  font-size: 6rem;
+  line-height: 1;
+  margin-bottom: 1rem;
+  animation: orb-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes orb-pulse {
+  0%, 100% { transform: scale(1) rotate(-6deg); filter: drop-shadow(0 0 0 rgba(243, 156, 18, 0)); }
+  50% { transform: scale(1.12) rotate(6deg); filter: drop-shadow(0 0 25px rgba(243, 156, 18, 0.8)); }
+}
+
+.flip-in {
+  animation: flip-in 0.7s ease-out;
+  transform-origin: top center;
+}
+
+@keyframes flip-in {
+  from { transform: perspective(1200px) rotateX(-70deg); opacity: 0; }
+  to { transform: perspective(1200px) rotateX(0); opacity: 1; }
+}
+
+/* Axis percentage bars */
+.breakdown-section {
+  margin: 2rem 0;
+}
+
+.breakdown-section h2,
+.share-sheet h2 {
+  font-size: 1.8rem;
+}
+
+.axis-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  text-align: left;
+}
+
+.axis-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+  opacity: 0.75;
+}
+
+.axis-labels .axis-chosen {
+  font-weight: 800;
+  color: var(--deep-purple);
+  opacity: 1;
+}
+
+.axis-labels span:first-child.axis-chosen,
+.axis-labels span:last-child.axis-chosen {
+  opacity: 1;
+}
+
+.axis-track {
+  display: flex;
+  height: 28px;
+  background: var(--lavender);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+/* The fill grows from the side of the chosen letter */
+.axis-fill {
+  display: flex;
+  align-items: center;
+  border-radius: 14px;
+  background: linear-gradient(90deg, var(--deep-purple), #8e44ad);
+  min-width: 3.5rem;
+  animation: grow 1s ease-out;
+}
+
+.axis-fill-low {
+  justify-content: flex-end;
+  padding-right: 0.6rem;
+}
+
+.axis-fill-high {
+  margin-left: auto;
+  padding-left: 0.6rem;
+  background: linear-gradient(90deg, #e67e22, var(--bright-orange));
+}
+
+.axis-percent {
+  color: var(--white);
+  font-weight: 800;
+  font-size: 0.85rem;
+}
+
+@keyframes grow {
+  from { width: 0; }
+}
+
+/* Friend view call to action */
+.friend-cta {
+  background: #fff7e8;
+  border: 2px dashed var(--bright-orange);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.friend-cta p {
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+/* Share */
+.share-sheet {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--lavender);
+}
+
+.share-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.results-card .share-buttons .btn {
+  margin-top: 0;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 10px 18px;
+  font-size: 0.95rem;
+}
+
+.share-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.share-whatsapp {
+  border-color: #25d366;
+}
+
+.share-status {
+  min-height: 1.5rem;
+  margin-top: 0.75rem;
+  font-weight: 700;
+  color: var(--deep-purple);
+}
+
+/* Full profile below the result card */
+.full-profile {
+  max-width: 1000px;
+  margin: 3rem auto 0;
+  scroll-margin-top: 90px;
+}
+
+.full-profile-heading {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .results-container .results-card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .result-name {
+    font-size: 2rem;
+  }
+
+  .axis-labels {
+    font-size: 0.8rem;
+  }
+}

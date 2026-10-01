@@ -19,7 +19,7 @@ export const getDb = () => {
 };
 
 // Function to save test result to Firebase
-export const saveTestResult = async (name, personalityType, answers) => {
+export const saveTestResult = async ({ name, personalityType, answers, percentages, questionVersion }) => {
   const [db, { collection, addDoc, serverTimestamp }] = await Promise.all([
     getDb(),
     import('firebase/firestore'),
@@ -29,6 +29,8 @@ export const saveTestResult = async (name, personalityType, answers) => {
     personalityType: personalityType.code,
     personalityName: personalityType.name,
     answers: answers,
+    percentages: percentages,
+    questionVersion: questionVersion,
     timestamp: serverTimestamp(),
     createdAt: new Date().toISOString()
   });

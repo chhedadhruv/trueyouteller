@@ -1,3 +1,5 @@
+import { PERSONALITY_TYPES } from './data/personalityTypes.js';
+
 // Indexable routes: prerendered to static HTML and listed in sitemap.xml.
 // Plain JS (no JSX/assets) so react-router.config.js and scripts/ can import it.
 export const SEO_ROUTES = [
@@ -8,3 +10,8 @@ export const SEO_ROUTES = [
   { path: '/feedback', priority: 0.3, changefreq: 'yearly' },
   { path: '/privacy', priority: 0.2, changefreq: 'yearly' },
 ];
+
+const typeSlugs = Object.keys(PERSONALITY_TYPES).map((code) => code.toLowerCase());
+
+// Prerendered so shared links get type-specific previews, but noindex and not in the sitemap.
+export const SHARE_ROUTES = typeSlugs.map((slug) => `/result/${slug}`);

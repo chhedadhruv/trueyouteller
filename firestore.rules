@@ -6,13 +6,16 @@ service cloud.firestore {
     // edit or delete them from the client (view them in the Firebase console).
     match /personalityTestResults/{id} {
       allow create: if request.resource.data.keys().hasOnly(
-                         ['name', 'personalityType', 'personalityName', 'answers', 'timestamp', 'createdAt'])
+                         ['name', 'personalityType', 'personalityName', 'answers', 'percentages',
+                          'questionVersion', 'timestamp', 'createdAt'])
                     && request.resource.data.name is string
                     && request.resource.data.name.size() <= 40
                     && request.resource.data.personalityType is string
                     && request.resource.data.personalityType.matches('^[EI][SN][TF][JP]$')
                     && request.resource.data.answers is list
                     && request.resource.data.answers.size() <= 60
+                    && request.resource.data.get('percentages', {}) is map
+                    && request.resource.data.get('questionVersion', 1) is int
                     && request.resource.data.timestamp == request.time;
       allow read, update, delete: if false;
     }

@@ -128,8 +128,8 @@
 }
 
 .name-input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  border-color: var(--deep-purple);
+  box-shadow: 0 0 0 0.2rem rgba(91, 44, 111, 0.2);
 }
 
 .random-name-btn {
@@ -145,9 +145,9 @@
 }
 
 .answer-btn.selected {
-  background-color: #007bff;
-  color: white;
-  border-color: #007bff;
+  background-color: var(--deep-purple);
+  color: var(--white);
+  border-color: var(--deep-purple);
 }
 
 .navigation-buttons {
@@ -249,4 +249,103 @@
 
 .privacy-note a {
   color: var(--deep-purple);
+}
+
+.question-meta {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.question-meta .statement-label {
+  margin-bottom: 0;
+}
+
+.time-left {
+  color: var(--dark-navy);
+  opacity: 0.75;
+  font-size: 0.95rem;
+}
+
+.cheer {
+  background: var(--lavender);
+  color: var(--deep-purple);
+  font-weight: 700;
+  border-radius: 12px;
+  padding: 0.6rem 1rem;
+  margin-bottom: 1.25rem;
+  animation: cheer-pop 0.4s ease-out;
+}
+
+@keyframes cheer-pop {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.keyboard-hint {
+  margin-top: 1.25rem;
+  font-size: 0.85rem;
+  opacity: 0.65;
+}
+
+@media (hover: none) {
+  .keyboard-hint { display: none; }
+}
+
+.resume-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.reveal-btn {
+  font-size: 1.15rem;
+}
+
+.review-list {
+  list-style: none;
+  margin-top: 2rem;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.review-item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--lavender);
+  border-radius: 10px;
+  background: var(--white);
+  font: inherit;
+  color: var(--dark-navy);
+  text-align: left;
+  cursor: pointer;
+}
+
+.review-item:hover {
+  border-color: var(--bright-orange);
+}
+
+.review-answer {
+  flex-shrink: 0;
+  font-weight: 700;
+  color: var(--deep-purple);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 480px) {
+  .review-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
 }

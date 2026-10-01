@@ -9,13 +9,14 @@
     "lint": "eslint .",
     "images:optimize": "node scripts/optimize-images.mjs",
     "og:generate": "node scripts/generate-og.mjs",
-    "deploy": "yarn build && firebase deploy --only hosting"
+    "deploy": "yarn build && firebase deploy --only hosting",
+    "test": "node --test \"src/**/*.test.js\""
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@react-router/node": "^7.9",
+    "canvas-confetti": "^1.9.4",
     "firebase": "^11.9.0",
-    "html2canvas": "^1.4.1",
     "isbot": "^5.2.2",
     "jspdf": "^3.0.1",
     "react": "^19.1.0",

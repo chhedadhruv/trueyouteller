@@ -17,7 +17,7 @@ const FAQS = [
   {
     question: 'How long does the personality test take?',
     answer:
-      'About 10 minutes. You rate 50 short statements from "Strongly Disagree" to "Strongly Agree", one at a time.',
+      'About 10 minutes. You rate 48 short statements from "Strongly Disagree" to "Strongly Agree", one at a time.',
   },
   {
     question: 'Is this an MBTI test?',
@@ -70,7 +70,7 @@ const LandingPage = () => {
           <div className="step">
             <div className="step-icon"><FaPencilAlt aria-hidden="true" /></div>
             <h3>1. Take the Test</h3>
-            <p>Rate 50 fun, relatable statements about how you think, feel and act.</p>
+            <p>Rate 48 fun, relatable statements about how you think, feel and act.</p>
           </div>
           <div className="step">
             <div className="step-icon"><GiCrystalBall aria-hidden="true" /></div>
