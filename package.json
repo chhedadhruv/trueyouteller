@@ -10,7 +10,8 @@
     "images:optimize": "node scripts/optimize-images.mjs",
     "og:generate": "node scripts/generate-og.mjs",
     "deploy": "yarn build && firebase deploy --only hosting",
-    "test": "node --test \"src/**/*.test.js\""
+    "test": "node --test \"src/**/*.test.js\"",
+    "test:rules": "firebase emulators:exec --only firestore --project demo-trueyouteller \"\"$npm_node_execpath\" --test tests/firestore.rules.test.js\""
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
+    "@firebase/rules-unit-testing": "^5.0.2",
     "@fontsource/chewy": "^5.3.0",
     "@fontsource/nunito": "^5.3.0",
     "@react-router/dev": "^7.9",

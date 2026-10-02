@@ -16,6 +16,8 @@ const Footer = () => (
           <li><Link to="/types">16 Personality Types</Link></li>
           <li><Link to="/compatibility">Compatibility Checker</Link></li>
           <li><Link to="/quizzes">Fun Quizzes</Link></li>
+          <li><Link to="/play">Play with Friends</Link></li>
+          <li><Link to="/cards">My Card Deck</Link></li>
           <li><Link to="/#faq">FAQ</Link></li>
         </ul>
       </nav>

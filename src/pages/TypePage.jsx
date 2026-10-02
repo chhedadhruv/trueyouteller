@@ -6,6 +6,7 @@ import { getAnimalImage } from '../utils/images';
 import { awardBadge, trackProgress } from '../utils/badges';
 import { breadcrumbJsonLd, buildMeta, SITE_NAME, SITE_URL } from '../utils/seo';
 import PersonalityProfile from '../components/PersonalityProfile';
+import TypeWorld from '../components/TypeWorld';
 import Breadcrumbs from '../components/Breadcrumbs';
 import '../styles/TypePages.css';
 
@@ -112,6 +113,8 @@ const TypePage = () => {
       </section>
 
       <PersonalityProfile type={type} />
+
+      <TypeWorld code={type.code} />
 
       <section className="result-card" aria-labelledby="best-matches">
         <h2 id="best-matches">Best matches for {type.code}</h2>

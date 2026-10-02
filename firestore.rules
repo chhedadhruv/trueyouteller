@@ -2,22 +2,116 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Test results: anyone can submit a well-formed result; nobody can read,
-    // edit or delete them from the client (view them in the Firebase console).
+
+    // ---------- helpers ----------
+    function data() { return request.resource.data; }
+    function isType(v) { return v is string && v.matches('^[EI][SN][TF][JP]$'); }
+    function shortText(v, max) { return v is string && v.size() > 0 && v.size() <= max; }
+    function stampedNow() { return data().createdAt == request.time; }
+    // { IE, SN, TF, JP } each 0-100
+    function isPercentages(p) {
+      return p is map && p.keys().hasOnly(['IE', 'SN', 'TF', 'JP']) && p.keys().hasAll(['IE', 'SN', 'TF', 'JP'])
+        && p.IE is int && p.IE >= 0 && p.IE <= 100
+        && p.SN is int && p.SN >= 0 && p.SN <= 100
+        && p.TF is int && p.TF >= 0 && p.TF <= 100
+        && p.JP is int && p.JP >= 0 && p.JP <= 100;
+    }
+
+    // ---------- test results: write-only from the client ----------
     match /personalityTestResults/{id} {
-      allow create: if request.resource.data.keys().hasOnly(
+      allow create: if data().keys().hasOnly(
                          ['name', 'personalityType', 'personalityName', 'answers', 'percentages',
-                          'questionVersion', 'timestamp', 'createdAt'])
-                    && request.resource.data.name is string
-                    && request.resource.data.name.size() <= 40
-                    && request.resource.data.personalityType is string
-                    && request.resource.data.personalityType.matches('^[EI][SN][TF][JP]$')
-                    && request.resource.data.answers is list
-                    && request.resource.data.answers.size() <= 60
-                    && request.resource.data.get('percentages', {}) is map
-                    && request.resource.data.get('questionVersion', 1) is int
-                    && request.resource.data.timestamp == request.time;
+                          'questionVersion', 'mode', 'timestamp', 'createdAt'])
+                    && shortText(data().name, 40)
+                    && isType(data().personalityType)
+                    && data().answers is list
+                    && data().answers.size() <= 60
+                    && data().get('percentages', {}) is map
+                    && data().get('questionVersion', 1) is int
+                    && data().get('mode', 'classic') in ['classic', 'scenario']
+                    && data().timestamp == request.time;
       allow read, update, delete: if false;
+    }
+
+    // ---------- link-based social features ----------
+    // Top-level docs: create once, read by exact id (the link), never list/edit/delete.
+    // Subcollection entries: create once; readable by anyone holding the parent's link.
+
+    // "How others see you"
+    match /mirrors/{id} {
+      allow create: if data().keys().hasOnly(['ownerName', 'ownerType', 'ownerPercentages', 'createdAt'])
+                    && shortText(data().ownerName, 40)
+                    && isType(data().ownerType)
+                    && isPercentages(data().ownerPercentages)
+                    && stampedNow();
+      allow get: if true;
+
+      match /ratings/{ratingId} {
+        // 16 Likert answers (-2..2). No name is stored, so ratings stay anonymous.
+        allow create: if exists(/databases/$(database)/documents/mirrors/$(id))
+                      && data().keys().hasOnly(['answers', 'createdAt'])
+                      && data().answers is list
+                      && data().answers.size() == 16
+                      && stampedNow();
+        allow read: if true;
+      }
+    }
+
+    // "Guess my type"
+    match /guesses/{id} {
+      allow create: if data().keys().hasOnly(['ownerName', 'ownerType', 'createdAt'])
+                    && shortText(data().ownerName, 40)
+                    && isType(data().ownerType)
+                    && stampedNow();
+      allow get: if true;
+
+      match /entries/{entryId} {
+        allow create: if exists(/databases/$(database)/documents/guesses/$(id))
+                      && data().keys().hasOnly(['name', 'guess', 'createdAt'])
+                      && shortText(data().name, 30)
+                      && isType(data().guess)
+                      && stampedNow();
+        allow read: if true;
+      }
+    }
+
+    // Group rooms
+    match /rooms/{id} {
+      allow create: if data().keys().hasOnly(['name', 'emoji', 'createdAt'])
+                    && shortText(data().name, 40)
+                    && shortText(data().emoji, 8)
+                    && stampedNow();
+      allow get: if true;
+
+      match /members/{memberId} {
+        allow create: if exists(/databases/$(database)/documents/rooms/$(id))
+                      && data().keys().hasOnly(['name', 'type', 'createdAt'])
+                      && shortText(data().name, 30)
+                      && isType(data().type)
+                      && stampedNow();
+        allow read: if true;
+      }
+    }
+
+    // Couple / BFF mode: the creator plus exactly one partner (fixed doc id "b").
+    match /duos/{id} {
+      allow create: if data().keys().hasOnly(['mode', 'aName', 'aType', 'createdAt'])
+                    && data().mode in ['couple', 'bestie']
+                    && shortText(data().aName, 40)
+                    && isType(data().aType)
+                    && stampedNow();
+      allow get: if true;
+
+      match /partner/{partnerId} {
+        // "create" only succeeds while the doc doesn't exist, so the first partner wins.
+        allow create: if partnerId == 'b'
+                      && exists(/databases/$(database)/documents/duos/$(id))
+                      && data().keys().hasOnly(['name', 'type', 'createdAt'])
+                      && shortText(data().name, 40)
+                      && isType(data().type)
+                      && stampedNow();
+        allow read: if true;
+      }
     }
 
     // Everything else is closed by default.

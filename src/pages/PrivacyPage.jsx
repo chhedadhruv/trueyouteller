@@ -52,10 +52,20 @@ const PrivacyPage = () => (
     </p>
     <AnalyticsPreference />
 
+    <h2>Games with friends</h2>
+    <p>
+      When you create a "How others see you", "Guess my type", couple/best-friend or group room link, we store the name
+      and personality type you choose to share, plus the answers friends submit through that link. Anyone who has the
+      link can see what was shared in it, so only send links to people you trust. "How others see you" ratings never
+      include the rater's name. Links can't be listed or searched; they work only for people you send them to.{' '}
+      <Link to="/contact">Contact us</Link> with a link to have it deleted.
+    </p>
+
     <h2>Stored on your device</h2>
     <p>
       To make the site work without an account, your browser keeps your in-progress test, your last result, your
-      badges, your theme and your analytics choice in local storage. Clearing your browser data removes them.
+      badges and cards, the game links you created or answered, your theme and your analytics choice in local
+      storage. Clearing your browser data removes them.
     </p>
 
     <h2>Where it's stored</h2>

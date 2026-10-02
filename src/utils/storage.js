@@ -1,4 +1,5 @@
 import { QUESTION_VERSION } from '../data/questions.js';
+import { SCENARIO_VERSION } from '../data/scenarios.js';
 import { SITE_URL } from './seo.js';
 import { encodePercentages } from './scoring.js';
 
@@ -25,12 +26,13 @@ const write = (key, value) => {
 const PROGRESS_KEY = 'tyt:test-progress';
 const LAST_RESULT_KEY = 'tyt:last-result';
 
-// In-progress test: { version, name, answers, index }
+// In-progress test: { mode, version, name, answers, index, invite }
+const versionFor = (mode) => (mode === 'scenario' ? SCENARIO_VERSION : QUESTION_VERSION);
 export const loadProgress = () => {
   const progress = read(PROGRESS_KEY);
-  return progress?.version === QUESTION_VERSION ? progress : null;
+  return progress && progress.version === versionFor(progress.mode) ? progress : null;
 };
-export const saveProgress = (progress) => write(PROGRESS_KEY, { ...progress, version: QUESTION_VERSION });
+export const saveProgress = (progress) => write(PROGRESS_KEY, { ...progress, version: versionFor(progress.mode) });
 export const clearProgress = () => write(PROGRESS_KEY, null);
 
 // Last completed result: { type, name, percentages, completedAt }
@@ -53,3 +55,27 @@ export const inviteUrl = ({ type, name }) => {
   if (name) params.set('rn', name);
   return `${SITE_URL}/test?${params}`;
 };
+
+// ---- Social features (mirror, guess, room, duo) ----
+
+// Links this browser created (owner view) or already answered (one entry per friend).
+const OWNED_KEY = 'tyt:owned';
+const ANSWERED_KEY = 'tyt:answered';
+
+const addTo = (key, kind, id, value = true) => {
+  const all = read(key) ?? {};
+  write(key, { ...all, [kind]: { ...(all[kind] ?? {}), [id]: value } });
+};
+const lookup = (key, kind, id) => (read(key) ?? {})[kind]?.[id] ?? null;
+
+export const rememberOwned = (kind, id) => addTo(OWNED_KEY, kind, id);
+export const isOwned = (kind, id) => Boolean(lookup(OWNED_KEY, kind, id));
+export const rememberAnswer = (kind, id, value) => addTo(ANSWERED_KEY, kind, id, value);
+export const getAnswer = (kind, id) => lookup(ANSWERED_KEY, kind, id);
+
+// A friend who opens a room/duo link before having a result takes the test first;
+// the result page then offers to finish joining.
+const PENDING_KEY = 'tyt:pending-join';
+export const setPendingJoin = (pending) => write(PENDING_KEY, pending);
+export const getPendingJoin = () => read(PENDING_KEY);
+export const clearPendingJoin = () => write(PENDING_KEY, null);

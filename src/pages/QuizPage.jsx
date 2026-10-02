@@ -154,6 +154,7 @@ const QuizPage = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       awardBadge('quiz-rookie');
       if (trackProgress('quizzes', quiz.slug) >= QUIZZES.length) awardBadge('quiz-master');
+      trackProgress('cards', `${quiz.slug}:${winner}`);
     },
     [answers, index, quiz]
   );
@@ -260,6 +261,7 @@ const QuizPage = () => {
             <button type="button" className="btn" onClick={start}>
               Retake quiz
             </button>
+            <Link to="/cards" className="btn">🃏 Added to your deck</Link>
             <Link to="/test" className="btn btn-primary">
               Take the full personality test
             </Link>

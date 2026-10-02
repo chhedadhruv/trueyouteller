@@ -45,6 +45,8 @@ export const awardBadge = (id) => {
   }
 };
 
+export const getProgress = (name) => read(PROGRESS_KEY, {})[name] ?? [];
+
 // Adds `value` to a named set (e.g. quizzes finished) and returns the set's size.
 export const trackProgress = (name, value) => {
   const progress = read(PROGRESS_KEY, {});

@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router';
 import { PERSONALITY_TYPES } from '../data/personalityTypes';
 import { axisBreakdown, decodePercentages } from '../utils/scoring';
-import { inviteUrl, loadLastResult, resultUrl } from '../utils/storage';
+import { getPendingJoin, inviteUrl, loadLastResult, resultUrl } from '../utils/storage';
 import { getCompatibility, pairSlug } from '../data/compatibility';
 import { awardBadge } from '../utils/badges';
 import { track } from '../utils/analytics';
@@ -11,7 +11,11 @@ import { buildMeta, SITE_URL } from '../utils/seo';
 import AxisBars from '../components/AxisBars';
 import ShareSheet from '../components/ShareSheet';
 import PersonalityProfile from '../components/PersonalityProfile';
+import TradingCard from '../components/TradingCard';
+import TypeWorld from '../components/TypeWorld';
+import { rarityFor } from '../data/typeRarity';
 import '../styles/ResultsPage.css';
+import '../styles/Social.css';
 
 const REVEAL_MS = 2400;
 
@@ -128,7 +132,13 @@ const ResultPage = () => {
     const percentages = decodePercentages(params.get('p'));
     const last = loadLastResult();
     const isOwner = Boolean(last && type && last.type === type.code && (!name || last.name === name));
-    setClient({ name, percentages, isOwner, invitedBy: isOwner ? last.invitedBy : null });
+    setClient({
+      name,
+      percentages,
+      isOwner,
+      invitedBy: isOwner ? last.invitedBy : null,
+      pendingJoin: isOwner ? getPendingJoin() : null,
+    });
   }, [location.search, type]);
 
   useEffect(() => {
@@ -189,6 +199,14 @@ const ResultPage = () => {
         <p className="result-kicker">{isOwner ? `${name}, your personality type is…` : 'Personality type'}</p>
         <h1 className="result-name">{heading}</h1>
         <p className="result-description">{type.description}</p>
+        {client?.pendingJoin && (
+          <div className="pending-join">
+            <p>You took the test to join {client.pendingJoin.label}.</p>
+            <Link to={client.pendingJoin.path} className="btn btn-primary">
+              Finish joining →
+            </Link>
+          </div>
+        )}
         {client?.invitedBy && <InviterMatch type={type} inviter={client.invitedBy} />}
         <div className="spirit-animal-section">
           <img
@@ -230,6 +248,32 @@ const ResultPage = () => {
 
         {isOwner && <InviteFriend type={type} name={name} />}
 
+        {isOwner && (
+          <section className="your-card" aria-labelledby="card-heading">
+            <h2 id="card-heading">Your card: {rarityFor(type.code).emoji} {rarityFor(type.code).label}!</h2>
+            <p>
+              Only about {rarityFor(type.code).percent}% of people are {type.code}. Collect more cards from the quizzes.
+            </p>
+            <div className="your-card-row">
+              <TradingCard type={type} breakdown={breakdown} />
+            </div>
+            <Link to="/cards" className="btn">🃏 See my deck</Link>
+          </section>
+        )}
+
+        {isOwner && (
+          <section className="play-teaser" aria-labelledby="play-teaser-heading">
+            <h2 id="play-teaser-heading">Play with friends 🎲</h2>
+            <ul className="play-teaser-list">
+              <li>🪞 How do your friends see you?</li>
+              <li>🤔 Can they guess your type?</li>
+              <li>💞 Couple or BFF report</li>
+              <li>👨‍👩‍👧‍👦 Map your whole group</li>
+            </ul>
+            <Link to="/play" className="btn btn-primary">Start a game</Link>
+          </section>
+        )}
+
         <div className="results-buttons-container">
           <a href="#full-profile" className="btn btn-primary">See the full profile ↓</a>
           <Link to={`/types/${type.code.toLowerCase()}`} className="btn">All about {type.code}</Link>
@@ -242,6 +286,7 @@ const ResultPage = () => {
           {isOwner ? 'Your full profile' : `The ${type.code} profile`}
         </h2>
         <PersonalityProfile type={type} />
+        <TypeWorld code={type.code} isYou={isOwner} />
       </div>
     </div>
   );

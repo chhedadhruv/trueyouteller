@@ -89,7 +89,8 @@ Make sure you have the following installed:
 | `yarn build` | 🏗️ Builds the app, prerenders every SEO page to static HTML and writes `sitemap.xml` |
 | `yarn deploy` | 🚀 Builds and deploys to Firebase Hosting |
 | `yarn lint` | 🔍 Lints the project files |
-| `yarn test` | 🧪 Runs the scoring unit tests |
+| `yarn test` | 🧪 Runs the unit tests (scoring, quizzes, compatibility, reports) |
+| `yarn test:rules` | 🔐 Tests `firestore.rules` on the Firestore emulator (needs Java 21+) |
 | `yarn images:optimize` | 🖼️ Converts images in `src/assets` into small WebP files in `src/images` |
 | `yarn og:generate` | 🃏 Regenerates the social share images in `public/og/` |
 | `node scripts/make-dark-logo.mjs` | 🌙 Rebuilds the dark-mode navbar logo from `src/images/trueyouteller.webp` |

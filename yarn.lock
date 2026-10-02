@@ -1095,6 +1095,11 @@
     "@firebase/util" "1.12.0"
     tslib "^2.1.0"
 
+"@firebase/rules-unit-testing@^5.0.2":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@firebase/rules-unit-testing/-/rules-unit-testing-5.0.2.tgz#32fe82281b312d54b13120b7c4fdf6cb6a0e9654"
+  integrity sha512-g053AaFcuf4gpAQbwRK/GIIGfPHhpomW3qkIYLi4xnaTUrf65yGP+0TPdojoXfB/ejrfevkXmMs5qXOTSwdN6A==
+
 "@firebase/storage-compat@0.3.22":
   version "0.3.22"
   resolved "https://registry.yarnpkg.com/@firebase/storage-compat/-/storage-compat-0.3.22.tgz#8d5b95b5583d2acac2183e8e3cc302c66c2c3902"

@@ -14,6 +14,7 @@ export default defineConfig({
       'canvas-confetti',
       'firebase/analytics',
       'firebase/app',
+      'firebase/app-check',
       'firebase/firestore',
       'jspdf',
       'react-hook-form',

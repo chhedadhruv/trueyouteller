@@ -39,6 +39,9 @@ Copy `.env.example` to `.env` and fill in every value. Firebase values come from
 | `invite_match` | Invited friend sees their match | `pair`, `score` |
 | `quiz_start` / `quiz_complete` | Mini-quizzes | `quiz`, `outcome`, `from_shared_link` |
 | `compat_check` | A compatibility pair page is viewed | `pair`, `score` |
+| `social_create` | A mirror, guess, duo or room link is created | `kind` |
+| `social_invite` | Its link is shared | `kind`, `method` |
+| `social_answer` | A friend rates, guesses or joins | `kind` |
 | `theme_change` | Dark/light toggle | `theme` |
 | `unlock_achievement` | A badge is earned | `achievement_id` |
 
@@ -52,11 +55,30 @@ firebase use --add            # pick your project; this writes .firebaserc
 yarn deploy                   # yarn build + firebase deploy --only hosting
 ```
 
-Firestore security rules live in `firestore.rules`. Compare them with the rules currently in the console, then deploy:
+Firestore security rules live in `firestore.rules`. They're covered by tests that run against the emulator, which needs **Java 21+**:
+
+```bash
+JAVA_HOME=$(/usr/libexec/java_home -v 21) yarn test:rules
+```
+
+Compare them with the rules currently in the console, then deploy:
 
 ```bash
 firebase deploy --only firestore:rules
 ```
+
+### Bot protection for the friend games (App Check)
+
+The friend games let anyone with a link write to Firestore, so turn on App Check to block scripted spam:
+
+1. Create a **reCAPTCHA v3** key at <https://www.google.com/recaptcha/admin> for `www.trueyouteller.com`.
+2. Firebase console → **App Check** → register the web app with that key.
+3. Put the site key in `.env` as `VITE_RECAPTCHA_SITE_KEY`, then rebuild and deploy.
+4. Watch App Check → **Metrics** for a few days. Once most requests are verified, click **Enforce** for Cloud Firestore.
+
+### Firestore index
+
+The games list entries sorted by `createdAt`. Single-field indexes are automatic, so no setup is needed. If Firestore ever logs an index link, open it once to create the index.
 
 ## 4. Domains: make www.trueyouteller.com the only address
 

@@ -13,6 +13,7 @@ export const SEO_ROUTES = [
   ...typeSlugs.map((slug) => ({ path: `/types/${slug}`, priority: 0.8, changefreq: 'monthly' })),
   { path: '/quizzes', priority: 0.8, changefreq: 'monthly' },
   ...QUIZZES.map((quiz) => ({ path: `/quizzes/${quiz.slug}`, priority: 0.8, changefreq: 'monthly' })),
+  { path: '/play', priority: 0.7, changefreq: 'monthly' },
   { path: '/compatibility', priority: 0.8, changefreq: 'monthly' },
   ...ALL_PAIR_SLUGS.map((slug) => ({ path: `/compatibility/${slug}`, priority: 0.6, changefreq: 'monthly' })),
   { path: '/about', priority: 0.5, changefreq: 'yearly' },
@@ -22,4 +23,4 @@ export const SEO_ROUTES = [
 ];
 
 // Prerendered so shared links get type-specific previews, but noindex and not in the sitemap.
-export const SHARE_ROUTES = typeSlugs.map((slug) => `/result/${slug}`);
+export const SHARE_ROUTES = [...typeSlugs.map((slug) => `/result/${slug}`), '/cards'];

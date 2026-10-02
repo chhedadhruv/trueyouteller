@@ -1,14 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { questions, answerOptions, QUESTION_VERSION } from '../data/questions';
+import { questions as classicQuestions, answerOptions, QUESTION_VERSION } from '../data/questions';
+import { scenarios, SCENARIO_VERSION } from '../data/scenarios';
 import { PERSONALITY_TYPES } from '../data/personalityTypes';
 import { scoreAnswers } from '../utils/scoring';
 import { clearProgress, loadProgress, resultPath, saveLastResult, saveProgress } from '../utils/storage';
 import { saveTestResult } from '../firebase/config';
-import { awardBadge } from '../utils/badges';
+import { awardBadge, trackProgress } from '../utils/badges';
 import { track } from '../utils/analytics';
 import { buildMeta, SITE_URL } from '../utils/seo';
 import '../styles/TestPage.css';
+import '../styles/Quiz.css';
 
 export const meta = () =>
   buildMeta({
@@ -53,15 +55,41 @@ const cuteNames = ["pookie", "pingu", "mogumogu", "peekaboo", "bubbles", "mochi"
   "puffypaws", "puddingpop", "fizzles", "rolypoly", "koko", "meepmeep", "tugboat", "cinnabun", "cloverbean",
   "twinklepuff", "booboofluff", "chibi", "snuffly"];
 
+// Two ways to take the test; both score with utils/scoring.
+const MODES = {
+  classic: {
+    id: 'classic',
+    questions: classicQuestions,
+    version: QUESTION_VERSION,
+    unit: 'statements',
+    title: 'Classic',
+    blurb: `${classicQuestions.length} statements · ~10 min`,
+    optionsFor: () => answerOptions,
+  },
+  scenario: {
+    id: 'scenario',
+    questions: scenarios,
+    version: SCENARIO_VERSION,
+    unit: 'situations',
+    title: 'Scenario',
+    blurb: `${scenarios.length} real-life situations · ~5 min`,
+    optionsFor: (question) => question.options,
+  },
+};
+
 const capitalize = (text) => text.charAt(0).toUpperCase() + text.slice(1);
-const emptyAnswers = () => Array(questions.length).fill(null);
-const optionLabel = (value) => answerOptions.find((option) => option.value === value)?.text;
+const emptyAnswers = (config) => Array(config.questions.length).fill(null);
+const optionLabel = (config, index, value) =>
+  config.optionsFor(config.questions[index]).find((option) => option.value === value)?.text;
 
 const TestPage = () => {
   // step: 'name' -> 'questions' -> 'review'
   const [step, setStep] = useState('name');
+  const [modeId, setModeId] = useState('classic');
+  const config = MODES[modeId];
+  const { questions } = config;
   const [name, setName] = useState('');
-  const [answers, setAnswers] = useState(emptyAnswers);
+  const [answers, setAnswers] = useState(() => emptyAnswers(MODES.classic));
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [savedProgress, setSavedProgress] = useState(null);
   const [showAnswers, setShowAnswers] = useState(false);
@@ -83,14 +111,16 @@ const TestPage = () => {
   }, []);
 
   useEffect(() => {
-    if (step !== 'name') saveProgress({ name, answers, index: currentQuestionIndex, invite });
-  }, [step, name, answers, currentQuestionIndex, invite]);
+    if (step !== 'name') saveProgress({ mode: modeId, name, answers, index: currentQuestionIndex, invite });
+  }, [step, modeId, name, answers, currentQuestionIndex, invite]);
 
   const resumeTest = () => {
+    const resumeMode = MODES[savedProgress.mode] ?? MODES.classic;
+    setModeId(resumeMode.id);
     setName(savedProgress.name);
     setAnswers(savedProgress.answers);
     const allAnswered = savedProgress.answers.every((answer) => answer !== null);
-    setCurrentQuestionIndex(Math.min(savedProgress.index ?? 0, questions.length - 1));
+    setCurrentQuestionIndex(Math.min(savedProgress.index ?? 0, resumeMode.questions.length - 1));
     setStep(allAnswered ? 'review' : 'questions');
     setSavedProgress(null);
     track('test_resume', { answered: savedProgress.answers.filter((a) => a !== null).length });
@@ -109,10 +139,10 @@ const TestPage = () => {
     e.preventDefault();
     if (name.trim()) {
       setName(capitalize(name.trim()));
-      setAnswers(emptyAnswers());
+      setAnswers(emptyAnswers(config));
       setCurrentQuestionIndex(0);
       setStep('questions');
-      track('test_start', { invited: invite ? 1 : 0 });
+      track('test_start', { invited: invite ? 1 : 0, mode: modeId });
     }
   };
 
@@ -138,7 +168,7 @@ const TestPage = () => {
       else if (firstUnanswered !== -1) setCurrentQuestionIndex(firstUnanswered);
       else setStep('review');
     },
-    [answers, currentQuestionIndex]
+    [answers, currentQuestionIndex, questions.length]
   );
 
   const handlePrev = useCallback(() => {
@@ -150,13 +180,13 @@ const TestPage = () => {
     if (step !== 'questions') return undefined;
     const onKeyDown = (e) => {
       if (e.metaKey || e.ctrlKey || e.altKey || e.target.closest?.('input, textarea, select')) return;
-      const option = answerOptions[Number(e.key) - 1];
+      const option = config.optionsFor(questions[currentQuestionIndex])[Number(e.key) - 1];
       if (option) handleAnswerSelect(option.value);
       else if (e.key === 'Backspace' || e.key === 'ArrowLeft') handlePrev();
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [step, handleAnswerSelect, handlePrev]);
+  }, [step, config, questions, currentQuestionIndex, handleAnswerSelect, handlePrev]);
 
   const editAnswer = (index) => {
     setCurrentQuestionIndex(index);
@@ -164,18 +194,20 @@ const TestPage = () => {
   };
 
   const revealResult = () => {
-    const { type, percentages } = scoreAnswers(answers);
+    const { type, percentages } = scoreAnswers(answers, questions);
     const result = { type, name, percentages, completedAt: new Date().toISOString(), invitedBy: invite };
     saveLastResult(result);
+    trackProgress('cards', type);
     awardBadge('first-test');
-    track('test_complete', { personality_type: type, invited: invite ? 1 : 0 });
+    track('test_complete', { personality_type: type, invited: invite ? 1 : 0, mode: modeId });
     clearProgress();
     saveTestResult({
       name,
       personalityType: PERSONALITY_TYPES[type],
       answers,
       percentages,
-      questionVersion: QUESTION_VERSION,
+      questionVersion: config.version,
+      mode: modeId,
     }).catch((error) => console.error('Failed to save test result:', error));
     navigate(resultPath(result), { state: { fresh: true } });
   };
@@ -194,7 +226,8 @@ const TestPage = () => {
             <div className="resume-box">
               <p className="welcome-subheading">
                 Welcome back, <strong>{savedProgress.name}</strong>! You answered{' '}
-                {savedProgress.answers.filter((answer) => answer !== null).length} of {questions.length} statements.
+                {savedProgress.answers.filter((answer) => answer !== null).length} of {savedProgress.answers.length}{' '}
+                {(MODES[savedProgress.mode] ?? MODES.classic).unit}.
               </p>
               <div className="resume-buttons">
                 <button type="button" className="btn btn-primary" onClick={resumeTest}>
@@ -207,9 +240,22 @@ const TestPage = () => {
             </div>
           ) : (
             <>
-              <p className="welcome-subheading">
-                {questions.length} quick statements · about 10 minutes · no sign-up. Enter a name or nickname to begin.
-              </p>
+              <p className="welcome-subheading">Free · no sign-up · pick a style, then enter a name or nickname.</p>
+              <div className="mode-picker" role="radiogroup" aria-label="Test style">
+                {Object.values(MODES).map((mode) => (
+                  <button
+                    key={mode.id}
+                    type="button"
+                    role="radio"
+                    aria-checked={modeId === mode.id}
+                    className={`mode-option ${modeId === mode.id ? 'selected' : ''}`}
+                    onClick={() => setModeId(mode.id)}
+                  >
+                    <strong>{mode.id === 'classic' ? '📝' : '🎬'} {mode.title}</strong>
+                    <span>{mode.blurb}</span>
+                  </button>
+                ))}
+              </div>
               <form onSubmit={handleNameSubmit} className="name-form">
                 <div className="name-input-container">
                   <label htmlFor="test-name" className="visually-hidden">Your name or nickname</label>
@@ -248,7 +294,7 @@ const TestPage = () => {
         <div className="test-card">
           <h1 className="welcome-heading">All done, {name}! 🎉</h1>
           <p className="welcome-subheading">
-            You've answered all {questions.length} statements. Ready to see what the crystal ball says?
+            You've answered all {questions.length} {config.unit}. Ready to see what the crystal ball says?
           </p>
           <div className="resume-buttons">
             <button type="button" className="btn btn-primary reveal-btn" onClick={revealResult}>
@@ -264,7 +310,7 @@ const TestPage = () => {
                 <li key={question.statement}>
                   <button type="button" className="review-item" onClick={() => editAnswer(index)}>
                     <span className="review-statement">{question.statement}</span>
-                    <span className="review-answer">{optionLabel(answers[index])} ✏️</span>
+                    <span className="review-answer">{optionLabel(config, index, answers[index])} ✏️</span>
                   </button>
                 </li>
               ))}
@@ -278,6 +324,8 @@ const TestPage = () => {
   const currentQuestion = questions[currentQuestionIndex];
   const progress = (answeredCount / questions.length) * 100;
   const minutesLeft = Math.ceil(((questions.length - answeredCount) * SECONDS_PER_QUESTION) / 60);
+  const options = config.optionsFor(currentQuestion);
+  const isScenario = modeId === 'scenario';
   const cheer = CHEERS[currentQuestionIndex];
 
   return (
@@ -295,29 +343,50 @@ const TestPage = () => {
           <div className="progress-bar" style={{ width: `${progress}%` }}></div>
         </div>
         <div className="question-meta">
-          <span className="statement-label">Statement {currentQuestionIndex + 1}/{questions.length}</span>
+          <span className="statement-label">
+            {isScenario ? 'Situation' : 'Statement'} {currentQuestionIndex + 1}/{questions.length}
+          </span>
           <span className="time-left">
             {minutesLeft > 0 ? `⏱ about ${minutesLeft} min left` : '⏱ last one!'}
           </span>
         </div>
         {cheer && <p className="cheer" key={cheer}>{cheer}</p>}
         <div className="question-section">
+          {isScenario && <span className="scenario-emoji" aria-hidden="true">{currentQuestion.emoji}</span>}
           <p className="question-text" aria-live="polite">{currentQuestion.statement}</p>
         </div>
-        <div className="answer-section likert-scale" role="group" aria-label="Your answer">
-          {answerOptions.map((option, i) => (
-            <button
-              key={option.value}
-              className={`btn answer-btn ${answers[currentQuestionIndex] === option.value ? 'selected' : ''}`}
-              onClick={() => handleAnswerSelect(option.value)}
-              aria-pressed={answers[currentQuestionIndex] === option.value}
-              aria-keyshortcuts={String(i + 1)}
-            >
-              {option.text}
-            </button>
-          ))}
-        </div>
-        <p className="keyboard-hint">Tip: press keys 1–5 to answer, Backspace to go back.</p>
+        {isScenario ? (
+          <div className="quiz-options" role="group" aria-label="What would you do?">
+            {options.map((option, i) => (
+              <button
+                key={option.text}
+                type="button"
+                className={`quiz-option ${answers[currentQuestionIndex] === option.value ? 'selected' : ''}`}
+                onClick={() => handleAnswerSelect(option.value)}
+                aria-pressed={answers[currentQuestionIndex] === option.value}
+                aria-keyshortcuts={String(i + 1)}
+              >
+                <span className="quiz-option-key" aria-hidden="true">{i + 1}</span>
+                {option.text}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <div className="answer-section likert-scale" role="group" aria-label="Your answer">
+            {options.map((option, i) => (
+              <button
+                key={option.value}
+                className={`btn answer-btn ${answers[currentQuestionIndex] === option.value ? 'selected' : ''}`}
+                onClick={() => handleAnswerSelect(option.value)}
+                aria-pressed={answers[currentQuestionIndex] === option.value}
+                aria-keyshortcuts={String(i + 1)}
+              >
+                {option.text}
+              </button>
+            ))}
+          </div>
+        )}
+        <p className="keyboard-hint">Tip: press keys 1–{options.length} to answer, Backspace to go back.</p>
         <div className="navigation-buttons">
           <button className="btn prev-btn" onClick={handlePrev} disabled={currentQuestionIndex === 0}>
             ← Back
