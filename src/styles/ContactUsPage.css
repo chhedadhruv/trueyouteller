@@ -1,5 +1,5 @@
 .contact-us-container .contact-us-content {
-  background-color: var(--white);
+  background-color: var(--surface);
   padding: 2.5rem;
   border-radius: 15px;
   box-shadow: 0 5px 20px rgba(44, 62, 80, 0.1);
@@ -7,6 +7,7 @@
   margin: 0 auto;
 }
 
+.contact-us-content h1,
 .contact-us-content h2,
 .contact-us-content p {
   text-align: center;
@@ -30,7 +31,7 @@
 .form-group label {
   margin-bottom: 0.5rem;
   font-weight: 600;
-  color: var(--dark-navy);
+  color: var(--text);
 }
 
 .form-group input,
@@ -38,7 +39,7 @@
   width: 100%;
   padding: 0.8rem 1rem;
   border-radius: 8px;
-  border: 2px solid #ddd;
+  border: 2px solid var(--border);
   font-family: var(--body-font);
   font-size: 1rem;
   transition: border-color 0.3s ease;

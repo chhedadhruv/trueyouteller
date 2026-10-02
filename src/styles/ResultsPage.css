@@ -1,5 +1,5 @@
 .results-container .results-card {
-  background: var(--white);
+  background: var(--surface);
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(44, 62, 80, 0.15);
   padding: 2rem 2.5rem;
@@ -12,18 +12,18 @@
 .result-name {
   font-size: 2.5rem;
   margin-bottom: 1rem;
-  color: var(--deep-purple);
+  color: var(--heading);
 }
 
 .result-description {
   font-size: 1.1rem;
   line-height: 1.6;
-  color: var(--dark-navy);
+  color: var(--text);
   margin-bottom: 2rem;
 }
 
 .spirit-animal-section {
-  background: var(--lavender);
+  background: var(--surface-alt);
   border-radius: 8px;
   padding: 1.5rem;
   margin: 2rem 0;
@@ -46,13 +46,13 @@
 
 .spirit-animal-section h3 {
   font-family: var(--title-font);
-  color: var(--deep-purple);
+  color: var(--heading);
   margin-bottom: 0.5rem;
 }
 
 .spirit-animal-section p {
   font-size: 1rem;
-  color: var(--dark-navy);
+  color: var(--text);
 }
 
 .results-card .btn {
@@ -88,7 +88,7 @@
 
 /* All Personality Types Section */
 .all-types-section {
-  background: var(--white);
+  background: var(--surface);
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(44, 62, 80, 0.15);
   padding: 2rem;
@@ -102,7 +102,7 @@
 .all-types-section h3 {
   font-family: var(--title-font);
   font-size: 2rem;
-  color: var(--deep-purple);
+  color: var(--heading);
   margin-bottom: 1.5rem;
 }
 
@@ -118,7 +118,7 @@
   align-items: center;
   gap: 0.25rem;
   padding: 1.5rem 1rem;
-  background-color: var(--lavender);
+  background-color: var(--surface-alt);
   border-radius: 10px;
   text-align: center;
 }
@@ -126,16 +126,221 @@
 .type-code {
   font-family: var(--title-font);
   font-size: 1.5rem;
-  color: var(--deep-purple);
+  color: var(--heading);
 }
 
 .type-name {
   font-weight: 600;
-  color: var(--dark-navy);
+  color: var(--text);
   margin-bottom: 0.5rem;
 }
 
 .type-animal {
   font-size: 0.9rem;
-  color: var(--dark-navy);
+  color: var(--text);
 } 
+
+.spirit-animal-section .spirit-animal-heading {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Reveal: suspense screen, then the card flips in */
+.reveal-card {
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.crystal-orb {
+  font-size: 6rem;
+  line-height: 1;
+  margin-bottom: 1rem;
+  animation: orb-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes orb-pulse {
+  0%, 100% { transform: scale(1) rotate(-6deg); filter: drop-shadow(0 0 0 rgba(243, 156, 18, 0)); }
+  50% { transform: scale(1.12) rotate(6deg); filter: drop-shadow(0 0 25px rgba(243, 156, 18, 0.8)); }
+}
+
+.flip-in {
+  animation: flip-in 0.7s ease-out;
+  transform-origin: top center;
+}
+
+@keyframes flip-in {
+  from { transform: perspective(1200px) rotateX(-70deg); opacity: 0; }
+  to { transform: perspective(1200px) rotateX(0); opacity: 1; }
+}
+
+/* Axis percentage bars */
+.breakdown-section {
+  margin: 2rem 0;
+}
+
+.breakdown-section h2,
+.share-sheet h2 {
+  font-size: 1.8rem;
+}
+
+.axis-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  text-align: left;
+}
+
+.axis-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+  opacity: 0.75;
+}
+
+.axis-labels .axis-chosen {
+  font-weight: 800;
+  color: var(--heading);
+  opacity: 1;
+}
+
+.axis-labels span:first-child.axis-chosen,
+.axis-labels span:last-child.axis-chosen {
+  opacity: 1;
+}
+
+.axis-track {
+  display: flex;
+  height: 28px;
+  background: var(--surface-alt);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+/* The fill grows from the side of the chosen letter */
+.axis-fill {
+  display: flex;
+  align-items: center;
+  border-radius: 14px;
+  background: linear-gradient(90deg, var(--deep-purple), #8e44ad);
+  min-width: 3.5rem;
+  animation: grow 1s ease-out;
+}
+
+.axis-fill-low {
+  justify-content: flex-end;
+  padding-right: 0.6rem;
+}
+
+.axis-fill-high {
+  margin-left: auto;
+  padding-left: 0.6rem;
+  background: linear-gradient(90deg, #e67e22, var(--bright-orange));
+}
+
+.axis-percent {
+  color: var(--white);
+  font-weight: 800;
+  font-size: 0.85rem;
+}
+
+@keyframes grow {
+  from { width: 0; }
+}
+
+/* Friend view call to action */
+.friend-cta {
+  background: var(--highlight-bg);
+  border: 2px dashed var(--bright-orange);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.friend-cta p {
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+/* Share */
+.share-sheet {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--border);
+}
+
+
+.results-card .share-buttons .btn {
+  margin-top: 0;
+}
+
+
+
+
+
+/* Full profile below the result card */
+.full-profile {
+  max-width: 1000px;
+  margin: 3rem auto 0;
+  scroll-margin-top: 90px;
+}
+
+.full-profile-heading {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .results-container .results-card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .result-name {
+    font-size: 2rem;
+  }
+
+  .axis-labels {
+    font-size: 0.8rem;
+  }
+}
+
+/* Invite / compatibility */
+.invite-friend {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--border);
+}
+
+.invite-friend h2 {
+  font-size: 1.8rem;
+}
+
+.invite-friend p {
+  margin-bottom: 1rem;
+}
+
+.inviter-match {
+  background: linear-gradient(135deg, var(--deep-purple), #8e44ad);
+  color: var(--white);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.inviter-match-title {
+  font-weight: 700;
+}
+
+.inviter-match-score {
+  font-family: var(--title-font);
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+}
+
+.inviter-match .btn-primary {
+  background: var(--bright-orange);
+  border-color: var(--bright-orange);
+}

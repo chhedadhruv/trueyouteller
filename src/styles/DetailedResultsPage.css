@@ -9,7 +9,7 @@
   border-radius: 20px;
   background: linear-gradient(135deg, var(--deep-purple), #7c4ee9);
   color: var(--white);
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border);
 }
 
 .detailed-header-emoji {
@@ -32,7 +32,7 @@
 }
 
 .result-card {
-  background: var(--white);
+  background: var(--surface);
   border-radius: 15px;
   padding: 2rem 2.5rem;
   margin-bottom: 2rem;
@@ -41,9 +41,9 @@
 
 .result-card h2 {
   font-size: 2rem;
-  color: var(--deep-purple);
+  color: var(--heading);
   margin-bottom: 1.5rem;
-  border-bottom: 2px solid var(--lavender);
+  border-bottom: 2px solid var(--border);
   padding-bottom: 0.5rem;
 }
 
@@ -56,7 +56,7 @@
 
 .result-card h4 {
   font-size: 1.2rem;
-  color: var(--dark-navy);
+  color: var(--text);
   margin-bottom: 0.5rem;
 }
 
@@ -109,8 +109,8 @@
 }
 
 .tag {
-  background-color: var(--lavender);
-  color: var(--deep-purple);
+  background-color: var(--surface-alt);
+  color: var(--heading);
   padding: 0.5rem 1rem;
   border-radius: 20px;
   font-weight: 600;
@@ -136,7 +136,7 @@
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   text-align: center;
-  background-color: #ffffff;
+  background-color: var(--surface);
   transition: transform 0.2s;
 }
 
@@ -155,7 +155,7 @@
   font-weight: bold;
   margin: 0;
   font-size: 0.9rem;
-  color: var(--deep-purple);
+  color: var(--heading);
 }
 
 .spirit-animal-image-detailed {

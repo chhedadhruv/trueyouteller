@@ -1,44 +1,88 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import '../styles/LandingPage.css';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { FaPencilAlt, FaHeart, FaPaintBrush, FaLaughBeam, FaBolt } from 'react-icons/fa';
 import { GiCrystalBall } from 'react-icons/gi';
-import logo from '../assets/trueyouteller_logo-removebg.png';
-import FriendsQuiz from '../components/MiniGames/friends/FriendsQuiz';
-import InsideOutQuiz from '../components/MiniGames/insideOut/InsideOutQuiz';
+import logo from '../images/trueyouteller-logo-removebg.webp';
+import QuizCard from '../components/QuizCard';
+import BadgeStrip from '../components/BadgeStrip';
+import { QUIZZES } from '../data/quizzes';
+import '../styles/Quiz.css';
+import { buildMeta, faqJsonLd, organizationJsonLd, websiteJsonLd } from '../utils/seo';
+
+const FAQS = [
+  {
+    question: 'Is this personality test free?',
+    answer:
+      'Yes. The TrueYouTeller personality test is 100% free, with no sign-up and no paywall. You get your full 16-type result, spirit animal and detailed profile instantly.',
+  },
+  {
+    question: 'How long does the personality test take?',
+    answer:
+      'About 10 minutes. You rate 48 short statements from "Strongly Disagree" to "Strongly Agree", one at a time.',
+  },
+  {
+    question: 'Is this an MBTI test?',
+    answer:
+      'It is an MBTI-style test based on the same four preference pairs (Introversion/Extraversion, Sensing/Intuition, Thinking/Feeling, Judging/Perceiving) and gives one of 16 personality types. It is not the official Myers-Briggs Type Indicator®.',
+  },
+  {
+    question: 'How accurate is the result?',
+    answer:
+      'It is designed for fun and self-reflection, not clinical diagnosis. Answer honestly about how you usually are, not how you want to be, for the most accurate result.',
+  },
+  {
+    question: 'What do I get at the end?',
+    answer:
+      'Your four-letter personality type, a spirit animal, strengths and weaknesses, career ideas, relationship insights, and famous people and characters who share your type.',
+  },
+];
+
+export const meta = () =>
+  buildMeta({
+    title: 'Free Personality Test (16 Types) | TrueYouTeller',
+    description:
+      'Take our free personality test and discover which of the 16 personality types you are, plus your spirit animal. No sign-up, instant results, about 10 minutes.',
+    path: '/',
+    jsonLd: [websiteJsonLd, organizationJsonLd, faqJsonLd(FAQS)],
+  });
 
 const LandingPage = () => {
   return (
     <div className="landing-page">
-      <Helmet>
-        <title>TrueYouTeller - Fun Personality Quizzes to Discover Yourself</title>
-        <meta name="description" content="Take our fun and insightful personality quizzes to discover your true self. Get instant results and gain insight into your unique strengths and quirks." />
-      </Helmet>
       <header className="landing-header">
-        <img src={logo} alt="Crystal Ball" className="crystal-ball-image" />
-        <h1>Welcome to TrueYouTeller!</h1>
-        <p className="subtitle">Discover your inner self with our fun personality test.</p>
-        <Link to="/test" className="btn btn-primary bouncing">Start the Test</Link>
+        <img
+          src={logo}
+          alt="TrueYouTeller crystal ball"
+          className="crystal-ball-image"
+          width="400"
+          height="400"
+          fetchPriority="high"
+        />
+        <h1>Free Personality Test: Discover Your True Type</h1>
+        <p className="subtitle">
+          Find out which of the 16 personality types you are, and meet your spirit animal, in about 10 minutes.
+        </p>
+        <Link to="/test" className="btn btn-primary bouncing">Start the Free Test</Link>
       </header>
 
       <section className="section container how-it-works">
-        <h2>How It Works</h2>
+        <h2>How the Personality Test Works</h2>
         <div className="steps-container">
           <div className="step">
-            <div className="step-icon"><FaPencilAlt /></div>
+            <div className="step-icon"><FaPencilAlt aria-hidden="true" /></div>
             <h3>1. Take the Test</h3>
-            <p>Answer a series of fun and engaging questions.</p>
+            <p>Rate 48 fun, relatable statements about how you think, feel and act.</p>
           </div>
           <div className="step">
-            <div className="step-icon"><GiCrystalBall /></div>
+            <div className="step-icon"><GiCrystalBall aria-hidden="true" /></div>
             <h3>2. Get Your Result</h3>
-            <p>Our magical crystal ball will reveal your personality type.</p>
+            <p>Our magical crystal ball reveals your four-letter personality type and spirit animal.</p>
           </div>
           <div className="step">
-            <div className="step-icon"><FaHeart /></div>
+            <div className="step-icon"><FaHeart aria-hidden="true" /></div>
             <h3>3. Know Yourself</h3>
-            <p>Gain insight into your unique strengths and quirks.</p>
+            <p>Explore your strengths, career ideas, relationships and famous personality twins.</p>
           </div>
         </div>
       </section>
@@ -48,30 +92,48 @@ const LandingPage = () => {
           <h2>Why You'll Love It</h2>
           <div className="features-container">
             <div className="feature-item">
-              <div className="feature-icon"><FaPaintBrush /></div>
+              <div className="feature-icon"><FaPaintBrush aria-hidden="true" /></div>
               <h3>Cute & Modern Design</h3>
-              <p>Enjoy a visually delightful experience with a charming, modern interface.</p>
+              <p>A personality quiz that feels like a game, not a questionnaire.</p>
             </div>
             <div className="feature-item">
-              <div className="feature-icon"><FaLaughBeam /></div>
+              <div className="feature-icon"><FaLaughBeam aria-hidden="true" /></div>
               <h3>Fun Questions</h3>
-              <p>Our questions are designed to be playful and thought-provoking.</p>
+              <p>Playful, thought-provoking statements based on the 16 personality types model.</p>
             </div>
             <div className="feature-item">
-              <div className="feature-icon"><FaBolt /></div>
-              <h3>Instant Results</h3>
-              <p>No waiting! Get your personality analysis right after the last question.</p>
+              <div className="feature-icon"><FaBolt aria-hidden="true" /></div>
+              <h3>Free & Instant</h3>
+              <p>No sign-up and no paywall. Your full result appears right after the last question.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="section container mini-games">
-        <h2>Mini-Games</h2>
-        <p>Try our fun mini-games to discover even more about yourself!</p>
-        <div className="mini-games-container">
-          <FriendsQuiz />
-          <InsideOutQuiz />
+      <BadgeStrip />
+
+      <section id="mini-games" className="section container mini-games">
+        <h2>Fun Quizzes</h2>
+        <p>Find your Hogwarts house, Marvel hero, FRIENDS character and more!</p>
+        <div className="quiz-grid">
+          {QUIZZES.slice(0, 3).map((quiz) => (
+            <QuizCard key={quiz.slug} quiz={quiz} />
+          ))}
+        </div>
+        <p className="mini-games-more">
+          <Link to="/quizzes" className="btn">See all {QUIZZES.length} quizzes →</Link>
+        </p>
+      </section>
+
+      <section id="faq" className="section container faq-section">
+        <h2>Personality Test FAQ</h2>
+        <div className="faq-list">
+          {FAQS.map(({ question, answer }) => (
+            <details key={question} className="faq-item">
+              <summary>{question}</summary>
+              <p>{answer}</p>
+            </details>
+          ))}
         </div>
       </section>
 
@@ -83,4 +145,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage; 
+export default LandingPage;

@@ -1,8 +1,15 @@
 import React, { useState, useRef } from 'react';
-import { Helmet } from 'react-helmet';
 import { useForm } from 'react-hook-form';
 import emailjs from '@emailjs/browser';
+import { buildMeta } from '../utils/seo';
 import '../styles/FeedbackPage.css';
+
+export const meta = () =>
+  buildMeta({
+    title: "Feedback - TrueYouTeller",
+    description: "Share your feedback about TrueYouTeller. Help us improve and make our free personality test and quizzes even better!",
+    path: '/feedback',
+  });
 
 const FeedbackPage = () => {
   const {
@@ -16,7 +23,7 @@ const FeedbackPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
 
-  const onSubmit = async (data) => {
+  const onSubmit = async () => {
     setIsSubmitting(true);
     setSubmitStatus(null);
     
@@ -40,12 +47,8 @@ const FeedbackPage = () => {
 
   return (
     <div className="feedback-container container section">
-      <Helmet>
-        <title>Feedback - TrueYouTeller</title>
-        <meta name="description" content="Share your feedback about TrueYouTeller. Help us improve and make our personality quizzes even better!" />
-      </Helmet>
       <div className="feedback-content">
-        <h2>We'd Love Your Feedback!</h2>
+        <h1 className="page-title">We'd Love Your Feedback!</h1>
         <p>
           Your opinion matters to us! Please share your thoughts about TrueYouTeller and how we can make it even better.
         </p>

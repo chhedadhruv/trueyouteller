@@ -4,7 +4,7 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 
 export default [
-  { ignores: ['dist'] },
+  { ignores: ['dist', 'build', '.react-router'] },
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
@@ -26,8 +26,16 @@ export default [
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
       'react-refresh/only-export-components': [
         'warn',
-        { allowConstantExport: true },
+        {
+          allowConstantExport: true,
+          // React Router route module exports
+          allowExportNames: ['meta', 'links', 'loader', 'clientLoader', 'Layout', 'ErrorBoundary', 'HydrateFallback'],
+        },
       ],
     },
+  },
+  {
+    files: ['scripts/**/*.mjs', '*.config.js'],
+    languageOptions: { globals: globals.node },
   },
 ]

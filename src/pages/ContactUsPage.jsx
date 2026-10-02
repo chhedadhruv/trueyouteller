@@ -1,8 +1,15 @@
 import React, { useState, useRef } from 'react';
-import { Helmet } from 'react-helmet';
 import { useForm } from 'react-hook-form';
 import emailjs from '@emailjs/browser';
+import { buildMeta } from '../utils/seo';
 import '../styles/ContactUsPage.css';
+
+export const meta = () =>
+  buildMeta({
+    title: "Contact TrueYouTeller - We'd Love to Hear From You",
+    description: "Have questions, feedback, or just want to say hello? Contact the TrueYouTeller team. We're here to help you on your journey of self-discovery.",
+    path: '/contact',
+  });
 
 const ContactUsPage = () => {
   const {
@@ -16,7 +23,7 @@ const ContactUsPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
 
-  const onSubmit = async (data) => {
+  const onSubmit = async () => {
     setIsSubmitting(true);
     setSubmitStatus(null);
     
@@ -40,12 +47,8 @@ const ContactUsPage = () => {
 
   return (
     <div className="contact-us-container container section">
-      <Helmet>
-        <title>Contact TrueYouTeller - We'd Love to Hear From You</title>
-        <meta name="description" content="Have questions, feedback, or just want to say hello? Contact the TrueYouTeller team. We're here to help you on your journey of self-discovery." />
-      </Helmet>
       <div className="contact-us-content">
-        <h2>Contact Us</h2>
+        <h1 className="page-title">Contact Us</h1>
         <p>
           Have questions, feedback, or just want to say hello? Drop us a message below!
         </p>
