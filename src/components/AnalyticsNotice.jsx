@@ -25,7 +25,7 @@ const AnalyticsNotice = () => {
     <div className="analytics-notice" role="region" aria-label="Analytics notice">
       <p>
         🍪 We use Google Analytics to see which quizzes people love and improve the site. No ads, no selling data.{' '}
-        <Link to="/privacy">Learn more</Link>
+        <Link to="/privacy">Read our privacy policy</Link>
       </p>
       <div className="analytics-notice-buttons">
         <button type="button" className="btn btn-primary" onClick={() => choose('granted')}>
