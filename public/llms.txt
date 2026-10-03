@@ -1,0 +1,44 @@
+# TrueYouTeller
+
+> Free personality test that tells you which of the 16 personality types you are, plus your spirit animal. No sign-up, instant results, about 10 minutes. Also offers fun character quizzes, a type compatibility checker and personality games to play with friends.
+
+## Main pages
+
+- [Personality test](https://www.trueyouteller.com/test): Rate 48 statements (classic or scenario mode) to get your 16-type result and spirit animal
+- [All 16 personality types](https://www.trueyouteller.com/types): Overview of every personality type
+- [Compatibility checker](https://www.trueyouteller.com/compatibility): How any two of the 16 types get along in love, friendship and work
+- [Play with friends](https://www.trueyouteller.com/play): See how friends see you, let them guess your type, compare as a couple or best friends, and map a group's personalities
+- [Fun quizzes](https://www.trueyouteller.com/quizzes): Short themed personality quizzes
+
+## Personality types
+
+- [ISTJ – The Logistician](https://www.trueyouteller.com/types/istj)
+- [ISFJ – The Defender](https://www.trueyouteller.com/types/isfj)
+- [INFJ – The Advocate](https://www.trueyouteller.com/types/infj)
+- [INTJ – The Architect](https://www.trueyouteller.com/types/intj)
+- [ISTP – The Virtuoso](https://www.trueyouteller.com/types/istp)
+- [ISFP – The Adventurer](https://www.trueyouteller.com/types/isfp)
+- [INFP – The Mediator](https://www.trueyouteller.com/types/infp)
+- [INTP – The Logician](https://www.trueyouteller.com/types/intp)
+- [ESTP – The Entrepreneur](https://www.trueyouteller.com/types/estp)
+- [ESFP – The Entertainer](https://www.trueyouteller.com/types/esfp)
+- [ENFP – The Campaigner](https://www.trueyouteller.com/types/enfp)
+- [ENTP – The Debater](https://www.trueyouteller.com/types/entp)
+- [ESTJ – The Executive](https://www.trueyouteller.com/types/estj)
+- [ESFJ – The Consul](https://www.trueyouteller.com/types/esfj)
+- [ENFJ – The Protagonist](https://www.trueyouteller.com/types/enfj)
+- [ENTJ – The Commander](https://www.trueyouteller.com/types/entj)
+
+## Quizzes
+
+- [Which Hogwarts House Do You Belong In?](https://www.trueyouteller.com/quizzes/hogwarts-house)
+- [Which Marvel Hero Are You?](https://www.trueyouteller.com/quizzes/marvel-hero)
+- [Which FRIENDS Character Are You?](https://www.trueyouteller.com/quizzes/friends)
+- [Which Inside Out Character Are You?](https://www.trueyouteller.com/quizzes/inside-out)
+- [Which Element Are You: Fire, Water, Earth or Air?](https://www.trueyouteller.com/quizzes/element)
+
+## Optional
+
+- [About](https://www.trueyouteller.com/about)
+- [Contact](https://www.trueyouteller.com/contact)
+- [Privacy policy](https://www.trueyouteller.com/privacy)

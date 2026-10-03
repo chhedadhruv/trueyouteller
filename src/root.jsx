@@ -12,12 +12,8 @@ export const links = () => [
   { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
   { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
   { rel: 'manifest', href: '/site.webmanifest' },
-  { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-  { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
-  {
-    rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap',
-  },
+  { rel: 'preload', href: '/fonts/nunito-latin.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' },
+  { rel: 'preload', href: '/fonts/chewy-latin.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' },
 ];
 
 export function Layout({ children }) {

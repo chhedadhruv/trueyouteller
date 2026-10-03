@@ -6,10 +6,14 @@
   "outputDirectory": "build/client",
   "cleanUrls": true,
   "trailingSlash": false,
-  "rewrites": [{ "source": "/(.*)", "destination": "/__spa-fallback" }],
+  "rewrites": [{ "source": "/((?!.*\\.).*)", "destination": "/__spa-fallback" }],
   "headers": [
     {
       "source": "/assets/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/fonts/(.*)",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
     },
     {
