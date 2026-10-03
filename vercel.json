@@ -6,7 +6,7 @@
   "outputDirectory": "build/client",
   "cleanUrls": true,
   "trailingSlash": false,
-  "rewrites": [{ "source": "/(.*)", "destination": "/__spa-fallback.html" }],
+  "rewrites": [{ "source": "/(.*)", "destination": "/__spa-fallback" }],
   "headers": [
     {
       "source": "/assets/(.*)",
