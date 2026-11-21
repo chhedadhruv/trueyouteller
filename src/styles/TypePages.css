@@ -333,3 +333,21 @@
     max-width: 170px;
   }
 }
+
+.pair-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+}
+
+.pair-group {
+  margin-top: 1.25rem;
+}
+
+.pair-group h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}

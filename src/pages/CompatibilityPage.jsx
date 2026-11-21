@@ -8,6 +8,7 @@ import { awardBadge } from '../utils/badges';
 import { track } from '../utils/analytics';
 import { breadcrumbJsonLd, buildMeta, SITE_URL } from '../utils/seo';
 import Breadcrumbs from '../components/Breadcrumbs';
+import { AllPairLinks } from '../components/PairLinks';
 import '../styles/DetailedResultsPage.css';
 import '../styles/TypePages.css';
 
@@ -218,6 +219,10 @@ const CompatibilityPage = () => {
             they might clash. Don't know your type? <Link to="/test">Take the free test</Link>.
           </p>
           <Picker />
+          <section className="result-card" aria-labelledby="all-pairs">
+            <h2 id="all-pairs">Browse all 136 pairings</h2>
+            <AllPairLinks />
+          </section>
         </>
       )}
     </div>

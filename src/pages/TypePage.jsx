@@ -8,6 +8,7 @@ import { breadcrumbJsonLd, buildMeta, SITE_NAME, SITE_URL } from '../utils/seo';
 import PersonalityProfile from '../components/PersonalityProfile';
 import TypeWorld from '../components/TypeWorld';
 import Breadcrumbs from '../components/Breadcrumbs';
+import { TypePairLinks } from '../components/PairLinks';
 import '../styles/TypePages.css';
 
 const findType = (param) => PERSONALITY_TYPES[(param ?? '').toUpperCase()];
@@ -131,6 +132,11 @@ const TypePage = () => {
         <p className="match-more">
           <Link to={`/compatibility?a=${type.code.toLowerCase()}`}>Check {type.code} compatibility with any type →</Link>
         </p>
+      </section>
+
+      <section className="result-card" aria-labelledby="all-pairings">
+        <h2 id="all-pairings">{type.code} compatibility with every type</h2>
+        <TypePairLinks code={type.code} />
       </section>
     </div>
   );
